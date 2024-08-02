@@ -8,7 +8,7 @@
 <!-- /vscode-markdown-toc -->
 
 
-# Unified Casual Language Modeling for Recommendation and Link Prediction on Knowledge Graphs
+# Unified Causal Language Modeling for Recommendation and Link Prediction on Knowledge Graphs
 
 <!--This Repository contain the code for the paper "Knowledge Graph Embeddings as Masked Language Models: Link Prediction, Recommendation, Explainability".-->
 
@@ -164,9 +164,9 @@ From [24]
 | CAFE [22]  |  0.21  |  0.15  |   0.06      | 0.03     |       0.77   |   0.45    |    0.93 |   0.26   |         |
 | PLM [23]  |  0.27  |  0.18  |   0.07      | 0.03    |      0.90    | 0.45      |   0.93  |  0.64     |         |
 | PEARLM [24]  |  0.44  |  0.31  |   0.13      | 0.08    |    0.93     |   0.45    |   0.93  |  ?0.80     |         |
-| UKGCLM zero-shot   |  0.11  |  0.07 |   0.03     | 0.01     |     0.98     |      ?0.54  |    0.93 |  0.74    |         |
-| UKGCLM finetuned  |  0.41  |  0.31  |   0.14      | 0.08    |     0.94    |     0.47  |  0.93   |     0.79 |         |
-| UKGCLM  |  0.46 |  0.36 |   0.16      | 0.09    |        0.91  |     0.46  |    0.93 |    0.81  |         |
+| UKGCLM gen-only(#EP.3)   |  0.11  |  0.07 |   0.03     | 0.01     |     0.98     |      ?0.54  |    0.93 |  0.74    |         |
+| UKGCLM gen+spec(#EP.2)  |  0.41  |  0.31  |   0.14      | 0.08    |     0.94    |     0.47  |  0.93   |     0.79 |         |
+| UKGCLM spec-only(#EP.20)  |  0.46 |  0.36 |   0.16      | 0.09    |        0.91  |     0.46  |    0.93 |    0.81  |         |
 
 
 
