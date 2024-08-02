@@ -1,16 +1,4 @@
-<!-- vscode-markdown-toc -->
-
-
-<!-- vscode-markdown-toc-config
-	numbering=false
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
-
-
 # Unified Causal Language Modeling for Recommendation and Link Prediction on Knowledge Graphs
-
-<!--This Repository contain the code for the paper "Knowledge Graph Embeddings as Masked Language Models: Link Prediction, Recommendation, Explainability".-->
 
 
 This work it's based on the evaluation functions and code style of the paper "PEARLM: Faithful Path-Based Explainable Recommendation via Language Modeling over Knowledge Graphs [24]".
@@ -18,27 +6,31 @@ This work it's based on the evaluation functions and code style of the paper "PE
 **Note:** all experiments have been run with fixed seed in order to ease reproducibility of the results. In the data folder you can find the datasets for link prediction from the RotatE paper [13].
 
 
+<!-- vscode-markdown-toc -->
+* [Requirements](#Requirements)
+* [Usage](#Usage)
+	* [Run the Experiments](#RuntheExperiments)
+	* [Reproducibility](#Reproducibility)
+* [Datasets](#Datasets)
+* [Results](#Results)
+	* [Recommendation](#Recommendation)
+	* [Link Prediction](#LinkPrediction)
+	* [Training and Evaluation Time on NVIDIA Tesla P6](#TrainingandEvaluationTimeonNVIDIATeslaP6)
+	* [Training and Evaluation Time on NVIDIA RTX A6000](#TrainingandEvaluationTimeonNVIDIARTXA6000)
+* [References](#References)
+* [Contributing](#Contributing)
+* [Citations](#Citations)
+* [License](#License)
 
-- [Unified Casual Language Modeling for Recommendation and Link Prediction on Knowledge Graphs](#unified-casual-language-modeling-for-recommendation-and-link-prediction-on-knowledge-graphs)
-	- [Requirements](#requirements)
-	- [Usage](#usage)
-		- [Run the Experiments](#run-the-experiments)
-		- [Reproducibility](#reproducibility)
-	- [Datasets](#datasets)
-	- [Results](#results)
-		- [Recommendation](#recommendation)
-		- [Link Prediction](#link-prediction)
-		- [Training and Evaluation Time on NVIDIA Tesla P6](#training-and-evaluation-time-on-nvidia-tesla-p6)
-		- [Training and Evaluation Time on NVIDIA RTX A6000](#training-and-evaluation-time-on-nvidia-rtx-a6000)
-	- [References](#references)
-	- [Contributing](#contributing)
-	- [Citations](#citations)
-	- [License](#license)
-
+<!-- vscode-markdown-toc-config
+	numbering=false
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
 
 ## <a name='Requirements'></a>Requirements
 - Python 3.9.13
-
+ 
 
 It is possible to download the weights and paths for UKGCLM from https://bit.ly/4aEWF0Z
 
@@ -57,7 +49,7 @@ It is possible to download the weights and paths for UKGCLM from https://bit.ly/
 9. Run `CUDA_DEVICE=0 && ./run_ukgclm_experiments.sh CUDA_DEVICE` to view the results on the best embeddings for UKGCLM on Recommendation and Link Prediction
 
 
-
+ 
 ### <a name='RuntheExperiments'></a>Run the Experiments
 To start the training for the reproducibility of recommendation results (the same is for link prediction), in background, from the root folder, run:
 
@@ -138,7 +130,7 @@ From [24]
 | #Test                   | 20,446        | 3,134      |
 
 ## <a name='Results'></a>Results
-### Recommendation
+### <a name='Recommendation'></a>Recommendation
 **ML1M**
 |          | NDCG | MRR  | Precision | Recall | Serendipity | Diversity | Novelty | Converage | Parameters: [Epoch, EmbSize, BatchSize, lr] |
 |----------|------|------|-----------|--------|-------------|-----------|---------|-----------|---------------------------------------------|
@@ -204,7 +196,7 @@ From [24]
 | UKGCLM gen+spec (#EP.2)  |  0.53  |  0.45 |   0.23      | 0.10    |   0.98        |      0.52  |    0.88  |  0.74     |               |
 | UKGCLM spec-only (#EP.20) |  0.57  |  0.49  |   0.26     | 0.11     |   0.98       |      0.60  |    0.88  |  0.77     |               |
 
-### Link Prediction
+### <a name='LinkPrediction'></a>Link Prediction
 
 **ml1m**
 |          | NDCG | MR | MRR | Hits@1 | Hits@3 | Hits@10 | Parameters: [Epoch, EmbSize, BatchSize, lr] |
@@ -305,7 +297,7 @@ From [24]
 | ConvKB  [10]| -                              | -                      |
 | ConvE [11]  | 20 minutes, 33 seconds | 46 minutes, 35 seconds|
 
-### Training and Evaluation Time on NVIDIA RTX A6000
+### <a name='TrainingandEvaluationTimeonNVIDIARTXA6000'></a>Training and Evaluation Time on NVIDIA RTX A6000
 **Link Prediction**
 
 |          | FB15k-237                      | WN18RR                  |
