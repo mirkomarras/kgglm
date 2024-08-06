@@ -131,7 +131,7 @@ python helper/pathlm/models/kge_rec/TransE/main.py --task evaluate --dataset lfm
 | Analogy  | 0.26  |  0.21    |[4,100,64,0.0001]         |
 | HolE    | 0.24  |  0.19    |      [11,100,64,0.0001]                |
 | ConvE   |  0.27  |  0.22   |       [2,200,256,0.0001]                 |
-| TopPopular | 0.26| 0.22|  | 
+| MostPopular | 0.26| 0.22|  | 
 | BPRMF   | 0.29|0.23 |  | 
 | CFKG   |  0.27  |  0.21    |         |
 | KGAT   |  0.31  |  0.24   |         |
@@ -165,7 +165,7 @@ python helper/pathlm/models/kge_rec/TransE/main.py --task evaluate --dataset lfm
 | Analogy |  0.33   |  0.28  |  [27,100,128,0.0001]                                   |
 | HolE    |  0.19  | 0.14   |             [29,100,64,0.0001]                 |
 | ConvE   |  0.13  |  0.11   |   [2,200,64,0.0001]            |
-| TopPopular | 0.12| 0.10| | 
+| MostPopular | 0.12| 0.10| | 
 | BPRMF   |0.08 |0.06 | | 
 | CKE   |  0.33  |  0.27  |         |
 | CFKG   |  0.13  |  0.10  |                   |
