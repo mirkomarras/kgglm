@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# All the models must be run from the pearlm/ directory
-if [[ "$(pwd)" != "$(pwd)/pearlm" ]]; then
-  cd pearlm/
+# All the models must be run from the helper/ directory
+if [[ "$(pwd)" != "$(pwd)/helper" ]]; then
+  cd helper/
 fi
 
 
