@@ -4,23 +4,23 @@ models=("Analogy" "ComplEx" "ConvE" "DistMult" "HolE" "RESCAL" "RotatE" "TorusE"
 
 for model in "${models[@]}"
 do
-	if [ ! -d /helper/pathlm/models/kge_rec/$model/weight_dir_ckpt ]; then
-		mkdir helper/pathlm/models/kge_rec/$model/weight_dir_ckpt
+	if [ ! -d /helper/models/kge/$model/weight_dir_ckpt ]; then
+		mkdir helper/models/kge/$model/weight_dir_ckpt
 	fi
 done
-cp Best\ Checkpoint\ for\ Reproducibility/Analogy_* helper/pathlm/models/kge_rec/Analogy/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/ComplEx_* helper/pathlm/models/kge_rec/ComplEx/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/ConvE_* helper/pathlm/models/kge_rec/ConvE/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/DistMult_* helper/pathlm/models/kge_rec/DistMult/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/HolE_* helper/pathlm/models/kge_rec/HolE/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/RESCAL_* helper/pathlm/models/kge_rec/RESCAL/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/RotatE_* helper/pathlm/models/kge_rec/RotatE/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/TorusE_* helper/pathlm/models/kge_rec/TorusE/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/TransD_* helper/pathlm/models/kge_rec/TransD/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/TransE_* helper/pathlm/models/kge_rec/TransE/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/TransH_* helper/pathlm/models/kge_rec/TransH/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/TransR_* helper/pathlm/models/kge_rec/TransR/weight_dir_ckpt
-cp Best\ Checkpoint\ for\ Reproducibility/TuckER_* helper/pathlm/models/kge_rec/TuckER/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/Analogy_* helper/models/kge/Analogy/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/ComplEx_* helper/models/kge/ComplEx/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/ConvE_* helper/models/kge/ConvE/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/DistMult_* helper/models/kge/DistMult/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/HolE_* helper/models/kge/HolE/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/RESCAL_* helper/models/kge/RESCAL/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/RotatE_* helper/models/kge/RotatE/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/TorusE_* helper/models/kge/TorusE/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/TransD_* helper/models/kge/TransD/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/TransE_* helper/models/kge/TransE/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/TransH_* helper/models/kge/TransH/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/TransR_* helper/models/kge/TransR/weight_dir_ckpt
+cp Best\ Checkpoint\ for\ Reproducibility/TuckER_* helper/models/kge/TuckER/weight_dir_ckpt
 
 mkdir helper/weights
 cp UKGCLM\ Weights/* helper/weights

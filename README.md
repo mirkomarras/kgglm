@@ -1,103 +1,94 @@
-# KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation in Recommendation
+<div align="center">
+
+<!-- [![arXiv](https://img.shields.io/badge/arXiv-<id>-b31b1b.svg)](https://arxiv.org/abs/<id>) -->
+[![Python](https://img.shields.io/badge/Python-3.9.19-<COLOR>.svg)](https://shields.io/)
+[![Torch](https://img.shields.io/badge/Torch-2.0.0-red.svg)](https://shields.io/)
+![nvidia-rtxa6000](https://img.shields.io/badge/NVIDIA-RTXA6000-76B900.svg?logo=Nvidia&logoColor=white)
+
+# KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation
+[Giacomo Balloccu](https://giacoballoccu.github.io/), [Ludovico Boratto](https://www.ludovicoboratto.com/), [Gianni Fenu](https://web.unica.it/unica/it/ateneo_s07_ss01.page?contentId=SHD30371), [Mirko Marras](https://www.mirkomarras.com/), [Alessandro Soccol](https://github.com/alessandrosocc)
+</div>
+
+<p align="center">
+  <img style="width: 75%" src="media/recsys24.png">
+</p>
 
 
-**Note:** all experiments have been run with fixed seed in order to ease reproducibility of the results.
+> **Abstract:** *Current recommendation methods based on knowledge graphs rely
+on entity and relation representations for several steps along the
+pipeline, with knowledge completion and path reasoning being
+the most influential. Despite their similarities, the most effective
+representation methods for these steps differ, leading to inefficien-
+cies, limited representativeness, and reduced interpretability. In this
+paper, we introduce **KGGLM**, a decoder-only Transformer model
+designed for generalizable knowledge representation learning to
+support recommendation. The model is trained on generic paths
+sampled from the knowledge graph to capture foundational pat-
+terns, and then fine-tuned on paths specific of the downstream step
+(knowledge completion and path reasoning in our case). Experiments on ML1M and LFM1M show that KGGLM beats twenty-two
+baselines in effectiveness under both knowledge completion and
+recommendation.*
 
-<!-- vscode-markdown-toc -->
-* [Requirements](#Requirements)
-* [Usage](#Usage)
-	* [Run the Experiments](#RuntheExperiments)
-	* [Reproducibility](#Reproducibility)
-* [Datasets](#Datasets)
-* [Results](#Results)
-	* [Recommendation](#Recommendation)
-	* [Knowledge Completion](#KnowledgeCompletion)
-* [Contributing](#Contributing)
-* [License](#License)
+# Setup
+It is possible to download weights and sampled paths here: [[Link](https://shorturl.at/EIZ8T)]
 
-<!-- vscode-markdown-toc-config
-	numbering=false
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
-
-## <a name='Requirements'></a>Requirements
-- Python 3.9.13
- 
-
-It is possible to download the weights and paths for KGGLM from *(LINK AVAILABLE UPON ACCEPTANCE)*
-
-*Make sure to download the `data/` folder present in onedrive and copy it into the `fix/` folder before proceeding.*
-
-## <a name='Usage'></a>Usage
-**Steps.**
-1. Clone of the repository by running `git clone --recurse-submodules https://github.com/mirkomarras/lm-vs-gnn-embeddings.git`
-2. Execute `chmod +x fix/fix.sh && ./fix/fix.sh`
-3. Install the required packages with `pip install -r requirements.txt`
-4. Install helper with `pip install helper/.`
-5. Run `CUDA_DEVICE=0 && ./run_kge_experiments_recommendation.sh CUDA_DEVICE` to train and view the results for the baselines on Recommendation
-6. Run `CUDA_DEVICE=0 && ./run_kge_evaluation_recommendation.sh CUDA_DEVICE` to view the results on the best embeddings for the baselines on Recommendation
-7. Run `CUDA_DEVICE=0 && ./run_kge_experiments_linkprediction.sh CUDA_DEVICE` to train and view the results for the baselines on Link Prediction
-8. Run `CUDA_DEVICE=0 && ./run_kge_evaluation_linkprediction.sh CUDA_DEVICE` to view the results on the best embeddings for the baselines on Link Prediction
-9. Run `CUDA_DEVICE=0 && ./run_kgglm_experiments.sh CUDA_DEVICE` to view the results on the best embeddings for KKGLM on Recommendation and Link Prediction
+### Steps
 
 
- 
-### <a name='RuntheExperiments'></a>Run the Experiments
-To start the training for the reproducibility of recommendation results (the same is for link prediction), in background, from the root folder, run:
-
-```sh
-> CUDA_DEVICE=0
-
-> screen -S baseline_computation -L -Logfile baseline.txt ./run_kge_experiments_recommendation.sh CUDA_DEVICE 
-```
-To detach from the terminal and let the server reproduce the experiments, press `CTRL+A` and press `d` (You can disconnect from the server and the training doesn't stop)
-
-To go back to the screen session, type `screen -r`
-
-
-Inside the bash script it's possible to modify the hyperparameters of a model, all the models are executed sequentially as it appears here:
-
-```sh
-### TransE: ml1m ###
-start=$(date +%s) # Start time to view at the end the total time of run
-echo -e "\n\t\t$(date)\n" # view the full date of start
-model="TransE"
-dataset="ml1m" 
-emb_size="100" # Embedding Size
-batch_size="64" # Batch Size
-lr="0.0001" # Learning Rate
-wd="0" # Weight Decay
-k="10" # Top-k
-use_cuda="all" 
-margin=1 # For the loss function
-echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n" # An header that will be displayed at the start of the execution
-# We set the CUDA_VISIBLE_DEVICE to set which gpu to use and we'll run the training in background. After, we save the corresponding time of execution in the file "elapsed_training.txt" by appending it.
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/pathlm/models/kge_rec/$model/main.py --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > pathlm/models/kge_rec/$model/results_$dataset.txt && end=$(date +%s) && runtime=$((end-start)) && echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds\n" >> elapsed_training.txt
+Clone the repository
+```bash
+git clone https://github.com/mirkomarras/kgglm.git
 ```
 
-### <a name='Reproducibility'></a>Reproducibility 
+Install dependencies
+```bash
+pip install -r requirements.txt
+pip install . # from root folder
+```
+### Sampling training data from datasets
+*Take account that paths are already available on the link above.*
+```bash
+./build_datasets_generic.sh # to pretrain
+./build_datasets_rec.sh # to finetune for recommendation
+./build_datasets_lp.sh # to finetune for knowledge completion
+```
+### Training
+*Take account that weights are already available on the link above.*
 
-The reproducibility of the experiments can be done by running `./run_kge_evaluations_recommendation.sh CUDA_DEVICE` or `./run_kge_evaluations_linkprediction.sh CUDA_DEVICE` where the models are executed sequentially with the default embeddings the ones that results to the best performance on the datasets.
 
-First of all it is necessary to download and copy the folders "Best Checkpoint for Reproducibility" and "kgglm Weights" from the link above (*LINK AVAILABLE UPON ACCEPTANCE*) to download the best weights, then you can run `./setup_reproducibility.sh` to automatically copy the weights in the correct folders (after you've downloaded the folder and moved it on the root). Finally, execute `./run_kge_evaluations_recommendation.sh CUDA_DEVICE` or `./run_kgglm_experiments.sh CUDA_DEVICE` to test the models on their best weights. 
+**Baselines on Recommendation**
 
-By executing it, you will obtain the same results as in the paper.
+```bash
+CUDA_DEVICE=0 && ./run_kge_experiments_recommendation.sh CUDA_DEVICE
+```
+**Baselines on Link Prediction**
 
-For Example, for TransE on ml1m and lfm1m for Recommendation:
-```sh
-# On ml1m
-python helper/pathlm/models/kge_rec/TransE/main.py --task evaluate --dataset ml1m --embed_size 100 --K 10 --model_checkpoint TransE_dataset_ml1m_ndcg_0.28_mrr_0.23_prec_0.1_rec_0.03_ser_0.33_div_0.41_nov_0.93_cov_0.04_epoch_16_e100_bs64_lr0.0001.pth
-
-# On lfm1m
-python helper/pathlm/models/kge_rec/TransE/main.py --task evaluate --dataset lfm1m --embed_size 100 --K 10 --model_checkpoint TransE_dataset_lfm1m_ndcg_0.12_mrr_0.1_prec_0.03_rec_0.01_ser_0.59_div_0.54_nov_0.85_cov_0.0_epoch_28_e100_bs64_lr0.001.pth
+```bash
+CUDA_DEVICE=0 && ./run_kge_experiments_linkprediction.sh CUDA_DEVICE
+```
+**KGGLM pretraining and finetuning**
+```bash
+CUDA_DEVICE=0 && ./run_kgglm_experiments.sh CUDA_DEVICE
 
 ```
->*Remember to change the embed_size parameter when you change the checkpoint for a model. In general, to test other weights, you have to move the weight ".pth" inside helper/pathlm/models/kge_rec/TransE/weight_dir_ckpt if the model to test is TransE for example. You can evaluate on link prediction task by changing the checkpoint and setting --lp True*
+### Evaluation
+
+**Baselines on Recommendation**
+
+```bash
+CUDA_DEVICE=0 && ./run_kge_evaluation_recommendation.sh CUDA_DEVICE
+```
+**Baselines on Link Prediction**
+
+```bash
+CUDA_DEVICE=0 && ./run_kge_evaluation_linkprediction.sh CUDA_DEVICE
+```
+
+# Data
+*Data is already available in the repository while paths can be downloaded from the link above. The paths_random_walk folder need to be placed on the corresponding dataset folder (e.g. data/lfm1m/paths_random_walk)*
 
 
-## <a name='Datasets'></a>Datasets
-
+### Datasets info
 |                             | ML1M        | LFM1M      |
 |-----------------------------|-------------|------------|
 | **Interaction Information** |             |            |
@@ -112,9 +103,8 @@ python helper/pathlm/models/kge_rec/TransE/main.py --task evaluate --dataset lfm
 | Avg. Degree Overall         | 28.07       | 25.05      |
 | Avg. Degree Products        | 64.86       | 17.53      |
 
-
-## <a name='Results'></a>Results
-### <a name='Recommendation'></a>Recommendation
+# Results
+### Recommendation
 **ML1M**
 |          | NDCG | MRR  |  Parameters: [Epoch, EmbSize, BatchSize, lr] |
 |----------|------|------|-----------------------------------------------|
@@ -143,13 +133,7 @@ python helper/pathlm/models/kge_rec/TransE/main.py --task evaluate --dataset lfm
 | KGGLM (gen-only)   |  0.11  |  0.07 |      [3,768, 256, 0.0002]     |
 | KGGLM (gen+spec) |  0.41  |  0.31  |        [2,768, 256, 0.0002]  |
 
-
-
-
-
-
 **LFM1M**
-
 
 |          | NDCG | MRR  |  Parameters: [Epoch, EmbSize, BatchSize, lr] |
 |----------|------|------|--------------------------------------------|
@@ -178,7 +162,7 @@ python helper/pathlm/models/kge_rec/TransE/main.py --task evaluate --dataset lfm
 | KGGLM (gen-only)    |  0.27  |  0.20 |  [3,768, 256, 0.0002]               |
 | KGGLM (gen+spec)  |  0.53  |  0.45 |  [2,768, 256, 0.0002]            |
 
-### <a name='KnowledgeCompletion'></a>Knowledge Completion
+### Knowledge Completion
 
 **ml1m**
 |           | MRR | Hits@1 |  Parameters: [Epoch, EmbSize, BatchSize, lr] |
@@ -217,16 +201,17 @@ python helper/pathlm/models/kge_rec/TransE/main.py --task evaluate --dataset lfm
 | HolE       |  0.33   | 0.23        |       [8, 100, 64, 0.0001]             |
 | ConvE    | 0.76    |    0.67        |      [11,200 ,64, 0.0001]                  |
 | KGGLM (gen-only)  |  0.26 |   0.20      |    [3,768, 256, 0.0002]  |
-| KGGLM (gen+spec)    |  0.09|   0.04    |       [2,768, 256, 0.0002]            |
+| KGGLM (gen+spec)    |  0.09|   0.04    |       [2,768, 256, 0.0002]            
 
 
-## <a name='Contributing'></a>Contributing
+
+# Contributing
 This code is provided for educational purposes and aims to facilitate reproduction of our results, and further research in this direction. We have done our best to document, refactor, and test the code before publication.
 
 If you find any bugs or would like to contribute new models, training protocols, etc, please let us know.
 
 Please feel free to file issues and pull requests on the repo and we will address them as we can.
-## <a name='License'></a>License
+# License
 This code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 This software is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability or fitness for a particular purpose. See the GNU General Public License for details.
