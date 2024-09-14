@@ -19,6 +19,12 @@ helper.egg-info/
 WordLevel/
 elapsed_training.txt
 optimizers/
-knowledge_aware/
-kgatstyle_dataset.py
 weights/
+logs/
+kgatstyle/
+amazon-book/
+yelp2018/
+mind-f/
+alibaba-fashion/
+.idea/
+kgat/

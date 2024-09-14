@@ -1,4 +1,4 @@
-new_id	pid
+new_id	rating_id
 0	761
 1	1080
 2	704
