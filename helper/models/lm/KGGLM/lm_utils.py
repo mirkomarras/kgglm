@@ -1,23 +1,13 @@
 import time
 from typing import Dict, List, Tuple
 
-from pathlm.tools.mapper import EmbeddingMapper
 from tqdm import tqdm
 from transformers import AutoTokenizer, TrainerCallback
 
 from helper.datasets.data_utils import get_set, get_user_negatives
 from helper.knowledge_graphs.kg_macros import RELATION, USER
 from helper.sampling.samplers.constants import LiteralPath, TypeMapper
-from helper.utils import get_data_dir, get_dataset_id2eid, get_eid_to_name_map
-
-# TOKENIZER_DIR = './tokenizers'
-
-
-# CLM_MODELS = ['WordLevel', 'gpt2-xl', "stabilityai/stablelm-base-alpha-3b"]
-
-# WORD_LEVEL_TOKENIZER = "./tokenizers/ml1m/WordLevel.json"
-
-
+from helper.utils import get_data_dir, get_eid_to_name_map
 
 def get_entity_vocab(dataset_name: str, model_name: str) -> List[int]:
     fast_tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
@@ -30,27 +20,6 @@ def get_entity_vocab(dataset_name: str, model_name: str) -> List[int]:
     for entity in entity_list:
         ans.append(tokenize_and_get_input_ids(entity))
     return [item for sublist in ans for item in sublist]
-
-
-def get_user_negatives_tokens_ids_old(dataset_name: str, tokenizer) -> Dict[str, List[str]]:
-    ikg_ids = list(get_dataset_id2eid(dataset_name).values())
-    ikg_token_ids = set([tokenizer.convert_tokens_to_ids(
-        f"P{ikg_id}") for ikg_id in ikg_ids])
-    uid_negatives = {}
-    # Generate paths for the test set
-    train_set = get_set(dataset_name, set_str='train')
-    valid_set = get_set(dataset_name, set_str='valid')
-    for uid in tqdm(train_set.keys(), desc="Calculating user negatives", colour="green"):
-        # train_items = [tokenizer(f"P{item}").input_ids[1] for item in train_set[uid]]
-        # val_items = [tokenizer(f"P{item}").input_ids[1] for item in valid_set[uid]]
-        train_items = [tokenizer.convert_tokens_to_ids(
-            f"P{item}") for item in train_set[uid]]
-        val_items = [tokenizer.convert_tokens_to_ids(
-            f"P{item}") for item in valid_set[uid]]
-        uid_negatives[uid] = list(
-            set(ikg_token_ids - set(train_items) - set(val_items) - set([0])))
-    return uid_negatives
-
 
 def get_user_negatives_and_tokens_ids(dataset_name: str, tokenizer) -> Tuple[Dict[int, List[int]], Dict[int, List[int]]]:
     """
@@ -65,7 +34,6 @@ def get_user_negatives_and_tokens_ids(dataset_name: str, tokenizer) -> Tuple[Dic
             f"P{item}") for item in user_negatives_ids[uid]]
     return user_negatives_ids, user_negatives_tokens_ids
 
-
 def get_user_positives(dataset_name: str) -> Dict[str, List[str]]:
     uid_positives = {}
     train_set = get_set(dataset_name, set_str='train')
@@ -74,7 +42,6 @@ def get_user_positives(dataset_name: str) -> Dict[str, List[str]]:
         uid_positives[uid] = list(
             set(train_set[uid]).union(set(valid_set[uid])))
     return uid_positives
-
 
 def _initialise_type_masks(tokenizer, allow_special=False):
     ent_mask = []
@@ -95,19 +62,6 @@ def _initialise_type_masks(tokenizer, allow_special=False):
 
         token_id_to_token[token_id] = token
     return ent_mask, rel_mask, token_id_to_token
-
-
-def _initialise_weights_from_kge(embeds, tokenizer, kg, model_config, model, args):
-    print('Using embeddings: ', args.emb_filename)
-    model_config.update({
-        'hidden_size': args.emb_size,
-        'num_attention_heads': args.emb_size // 10
-    })
-    print('ORIGINAL EMBEDDING OVERWRITTED BY TRANSE')
-    mapper = EmbeddingMapper(tokenizer, kg, embeds)
-    mapper.init_with_embedding(model.transformer.wte.weight)
-    return model, model_config
-
 
 def tokenize_augmented_kg(kg, tokenizer, use_token_ids=False):
     type_id_to_subtype_mapping = kg.dataset_info.groupwise_global_eid_to_subtype.copy()

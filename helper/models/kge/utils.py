@@ -100,20 +100,6 @@ def get_set_lp(dataset,split):
         curr_set[(triplet[0],triplet[1])].append(triplet[2])
     return curr_set
 
-# def load_kg_lp(dataset,split):
-#     if dataset=='ml1m' or dataset=='lfm1m':
-#         path=os.path.join('data',dataset,'preprocessed',f'kg_{split}.txt')
-#         e_df=pd.read_csv(os.path.join('data',dataset,'preprocessed','e_map.txt'),sep="\t")
-#     else:
-#         path=os.path.join('data',dataset,f'kg_{split}.txt')
-#         e_df = pd.read_csv(os.path.join('data', dataset,'entities.dict'), sep="\t", names=['eid','entity'])
-
-#     kg_df=pd.read_csv(path,sep="\t")
-#     kg_df.rename(columns={"entity_head":"from","entity_tail":"to","relation":"rel"},inplace=True)
-#     kg=KnowledgeGraph(df=kg_df,ent2ix=dict(zip(e_df['eid'],e_df['eid'])))
-#     return kg
-
-
 def get_users_positives_lp(dataset):
     users_positives=defaultdict(list)
     if dataset=='ml1m' or dataset=='lfm1m':

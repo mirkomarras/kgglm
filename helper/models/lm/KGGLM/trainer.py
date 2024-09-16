@@ -12,13 +12,9 @@ from helper.evaluation.eval_utils import (get_set, save_topks_items_results,
                                           save_topks_paths_results)
 from helper.models.kge.utils import (get_kg_positives_and_tokens_ids_lp,
                                      get_set_lp, metrics_lp)
-from helper.models.lm.KGGLM.decoding_constraints import (
-    ConstrainedLogitsProcessorLP, ConstrainedLogitsProcessorWordLevel,
-    PLMLogitsProcessorWordLevel, PrefixConstrainedLogitsProcessorWordLevel)
-from helper.models.lm.KGGLM.lm_utils import (_initialise_type_masks,
-                                             get_user_negatives_and_tokens_ids)
-from helper.models.lm.KGGLM.ranker import (CumulativeSequenceScoreRanker,
-                                           RankerLP)
+from helper.models.lm.KGGLM.decoding_constraints import ConstrainedLogitsProcessorLP, ConstrainedLogitsProcessorREC
+from helper.models.lm.KGGLM.lm_utils import get_user_negatives_and_tokens_ids
+from helper.models.lm.KGGLM.ranker import CumulativeSequenceScoreRanker, RankerLP
 from helper.utils import get_dataset_id2eid
 
 
@@ -38,13 +34,11 @@ class PathPretrainTrainer(Trainer):
             eval_device='cpu',
             tokenized_kg=None,
             experiment_name=None,
-            logit_processor_type='gcd',
             **kwargs
     ):
         super().__init__(**kwargs)
 
         self.cmd_args = cmd_args
-        self.training_args=kwargs['args']
         self.model = kwargs['model']
         self.tokenizer = tokenizer
         self.dataset_name = dataset_name
@@ -92,31 +86,17 @@ class PathPretrainTrainer(Trainer):
                                                        max_new_tokens=self.SEQUENCE_LEN_LP)
         self.test_dataset_lp = Dataset.from_dict(self.inference_paths_lp)
         print(f'Sequence length rec: {self.SEQUENCE_LEN_REC}, lp: {self.SEQUENCE_LEN_LP}')
-        # Logit processor recommendation
-        logit_processor = None
-        logit_proc_kwargs = {}
-        if logit_processor_type == 'gcd':
-            logit_processor_cls = ConstrainedLogitsProcessorWordLevel
-        elif logit_processor_type == 'pgcd':
-            logit_processor_cls = PrefixConstrainedLogitsProcessorWordLevel
-        else:
-            logit_processor_cls = PLMLogitsProcessorWordLevel
-            ent_mask, rel_mask, token_id_to_token = _initialise_type_masks(tokenizer)
-            logit_proc_kwargs['ent_mask'] = ent_mask
-            logit_proc_kwargs['rel_mask'] = rel_mask
-            logit_proc_kwargs['token_id_to_token'] = token_id_to_token
-        print('Using: ', logit_processor_cls)
+
 
         self.logits_processor_rec = LogitsProcessorList([
-            logit_processor_cls(tokenized_kg=tokenized_kg,
+            ConstrainedLogitsProcessorREC(tokenized_kg=tokenized_kg,
                                 force_token_map=self.user_negatives_token_ids,
                                 tokenizer=tokenizer,
                                 total_length=self.SEQUENCE_LEN_REC,
                                 num_return_sequences=self.N_SEQUENCES_PER_USER,
                                 id_to_uid_token_map=self.token_id_to_uid_token_map,
                                 eos_token_ids=[
-                                    self.tokenizer.convert_tokens_to_ids(self.tokenizer.eos_token)],
-                                **logit_proc_kwargs
+                                    self.tokenizer.convert_tokens_to_ids(self.tokenizer.eos_token)]
                                 )
         ])
 
@@ -128,8 +108,7 @@ class PathPretrainTrainer(Trainer):
                                          total_length=self.SEQUENCE_LEN_LP,
                                          num_return_sequences=self.N_SEQUENCES_PER_USER,
                                          eos_token_ids=[
-                                             self.tokenizer.convert_tokens_to_ids(self.tokenizer.eos_token)],
-                                         **logit_proc_kwargs
+                                             self.tokenizer.convert_tokens_to_ids(self.tokenizer.eos_token)]
                                          )
         ])
     
@@ -177,9 +156,7 @@ class PathPretrainTrainer(Trainer):
         with tqdm(initial=0, desc="Generating topks", colour="green", total=len(self.test_set_lp)) as pbar:
             for i in range(0, len(self.test_set_lp), batch_size):
                 batch = self.test_dataset_lp[i:i + batch_size]
-                inputs = self.tokenizer(batch["eid_rid"], return_tensors='pt', add_special_tokens=False, ).to(
-                    self.eval_device)
-
+                inputs = self.tokenizer(batch["eid_rid"], return_tensors='pt', add_special_tokens=False, ).to(self.eval_device)
                 outputs = model.generate(
                     **inputs,
                     max_length=self.SEQUENCE_LEN_LP,
@@ -190,7 +167,6 @@ class PathPretrainTrainer(Trainer):
                     num_beam_groups=5,
                     diversity_penalty=0.3,
                     do_sample=False,
-                    # top_p=0.4,
                     logits_processor=self.logits_processor_lp,
                     return_dict_in_generate=True,
                     output_scores=True,
@@ -279,7 +255,6 @@ class PathFinetuneLinkPredictionTrainer(Trainer):
             eval_device='cpu',
             tokenized_kg=None,
             experiment_name=None,
-            logit_processor_type='gcd',
             **kwargs
     ):
         super().__init__(**kwargs)
@@ -434,7 +409,6 @@ class PathFinetuneExplainableRecTrainer(Trainer):
             eval_device='cpu',
             tokenized_kg=None,
             experiment_name=None,
-            logit_processor_type='gcd',
             **kwargs
     ):
         super().__init__(**kwargs)
@@ -470,31 +444,17 @@ class PathFinetuneExplainableRecTrainer(Trainer):
 
         print(f'Sequence length rec: {self.SEQUENCE_LEN_REC}')
 
-        # Logit processor recommendation
-        logit_processor = None
-        logit_proc_kwargs = {}
-        if logit_processor_type == 'gcd':
-            logit_processor_cls = ConstrainedLogitsProcessorWordLevel
-        elif logit_processor_type == 'pgcd':
-            logit_processor_cls = PrefixConstrainedLogitsProcessorWordLevel
-        else:
-            logit_processor_cls = PLMLogitsProcessorWordLevel
-            ent_mask, rel_mask, token_id_to_token = _initialise_type_masks(tokenizer)
-            logit_proc_kwargs['ent_mask'] = ent_mask
-            logit_proc_kwargs['rel_mask'] = rel_mask
-            logit_proc_kwargs['token_id_to_token'] = token_id_to_token
-        print('Using: ', logit_processor_cls)
+
 
         self.logits_processor_rec = LogitsProcessorList([
-            logit_processor_cls(tokenized_kg=tokenized_kg,
+            ConstrainedLogitsProcessorREC(tokenized_kg=tokenized_kg,
                                 force_token_map=self.user_negatives_token_ids,
                                 tokenizer=tokenizer,
                                 total_length=self.SEQUENCE_LEN_REC,
                                 num_return_sequences=self.N_SEQUENCES_PER_USER,
                                 id_to_uid_token_map=self.token_id_to_uid_token_map,
                                 eos_token_ids=[
-                                    self.tokenizer.convert_tokens_to_ids(self.tokenizer.eos_token)],
-                                **logit_proc_kwargs
+                                    self.tokenizer.convert_tokens_to_ids(self.tokenizer.eos_token)]
                                 )
         ])
 

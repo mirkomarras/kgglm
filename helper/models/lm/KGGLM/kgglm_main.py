@@ -118,7 +118,6 @@ def train(args: argparse.Namespace, tokenizer, tokenized_dataset, kg):
             args=training_args,
             train_dataset=tokenized_dataset["train"],
             experiment_name=args.experiment_model_name,
-            logit_processor_type=args.logit_processor_type,
             data_collator=DataCollatorForLanguageModeling(
                 tokenizer=tokenizer, mlm=False),
             callbacks=[EarlyStoppingCallback(
@@ -141,7 +140,6 @@ def train(args: argparse.Namespace, tokenizer, tokenized_dataset, kg):
             args=training_args,
             train_dataset=tokenized_dataset["train"],
             experiment_name=args.experiment_model_name,
-            logit_processor_type=args.logit_processor_type,
             data_collator=DataCollatorForLanguageModeling(
                 tokenizer=tokenizer, mlm=False),
             callbacks=[EarlyStoppingCallback(
@@ -162,7 +160,6 @@ def train(args: argparse.Namespace, tokenizer, tokenized_dataset, kg):
             args=training_args,
             train_dataset=tokenized_dataset["train"],
             experiment_name=args.experiment_model_name,
-            logit_processor_type=args.logit_processor_type,
             data_collator=DataCollatorForLanguageModeling(
                 tokenizer=tokenizer, mlm=False),
             callbacks=[EarlyStoppingCallback(

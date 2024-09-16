@@ -21,6 +21,7 @@ class KGGLM(GPT2LMHeadModel):
 
         self.init_weights()
 
+
         # Model parallel
         self.model_parallel = False
         self.device_map = None
@@ -30,6 +31,7 @@ class KGGLM(GPT2LMHeadModel):
         # Create type embedding layer
         self.type_embeddings = torch.nn.Embedding(num_embeddings=self.num_kg_types,
                                                   embedding_dim=config.hidden_size)  # for entities, relations, and special tokens
+
         self.type_ids_cache = dict()
         self.type_embeds_cache = dict()
         self.idx_mask_cache = dict()
@@ -49,6 +51,7 @@ class KGGLM(GPT2LMHeadModel):
         type_ids = type_ids.to(self.type_embeddings.weight.device)
         type_embeds = self.type_embeddings(type_ids)
         return type_ids, type_embeds
+
 
     def __get_type_embeds(self, n_rows, n_cols):
         row = self.type_ids_row[:, :(n_cols - 1)]
@@ -82,19 +85,21 @@ class KGGLM(GPT2LMHeadModel):
         batch_size, seq_len = input_ids.shape
         k = (batch_size, seq_len)
         if k not in self.type_ids_cache:
-            type_ids, type_embeds = self.__init_type_embeddings(
-                batch_size, seq_len)
+            type_ids, type_embeds = self.__init_type_embeddings(batch_size, seq_len)
 
             self.type_ids_cache[k], self.type_embeds_cache[k] = type_ids, type_embeds
 
         type_ids, type_embeds = self.type_ids_cache[k], self.type_embeds_cache[k]
 
+
         if inputs_embeds is not None:
             inputs_embeds += type_embeds
+
 
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
         if labels is not None:
             use_cache = False
+
 
         transformer_outputs = self.transformer(
             input_ids,
@@ -118,8 +123,7 @@ class KGGLM(GPT2LMHeadModel):
         lm_loss = None
         if labels is not None:
             # we are doing next-token prediction; shift prediction scores and input ids by one
-            shifted_prediction_scores = prediction_scores[:,
-                                                          :-1, :].contiguous()
+            shifted_prediction_scores = prediction_scores[:,:-1, :].contiguous()
             labels = labels[:, 1:].contiguous()
             loss_fct = CrossEntropyLoss()
             lm_loss = loss_fct(

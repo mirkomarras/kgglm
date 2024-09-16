@@ -2,20 +2,17 @@ import argparse
 import os
 
 from datasets import DatasetDict
-from pathlm.models.lm.path_dataset import PathDataset
-from transformers import (PreTrainedTokenizerFast,
-                          set_seed)
+from transformers import PreTrainedTokenizerFast, set_seed
 
+from helper.models.lm.path_dataset import PathDataset
 from helper.sampling import KGsampler
 from helper.utils import SEED, check_dir, get_data_dir, get_root_data_dir
 from tokenizers import Tokenizer, models, pre_tokenizers, processors, trainers
 
 # Read an example and return the tokenized version
 
-
 def tokenize_function(examples: str, context_length: int = 200):
     return tokenizer(examples["path"], truncation=True, padding=True, max_length=context_length)
-
 
 def read_triplets(file_path):
     triplets = []
@@ -24,7 +21,6 @@ def read_triplets(file_path):
             head, relation, tail = line.strip().split('\t')
             triplets.append((head, relation, tail))
     return triplets
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

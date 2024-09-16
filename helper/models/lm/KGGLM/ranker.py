@@ -20,8 +20,7 @@ class RankerLP():
         self.K = K
 
     def update_topk(self, generate_outputs):
-        sorted_scores = generate_outputs.sequences_scores.argsort(
-            descending=True)
+        sorted_scores = generate_outputs.sequences_scores.argsort(descending=True)
         generate_outputs.sequences = generate_outputs.sequences[sorted_scores]
         for sequence in generate_outputs.sequences:
             sequence = self.tokenizer.decode(sequence).split(' ')
@@ -55,9 +54,6 @@ class CumulativeSequenceScoreRanker():
         self.sequence_scorer_fnc = self.calculate_sequence_scores
 
     def calculate_sequence_scores(self, normalized_tuple, sequences):
-        # print('aaaa')
-        # print(sequences.shape, self.max_new_tokens)
-        # print(len(normalized_tuple), normalized_tuple[0].shape)
         last_5_tokens = sequences[:, -self.max_new_tokens:]
         sequence_scores = []
         # Iterate over each tensor in the normalized tuple
@@ -79,11 +75,8 @@ class CumulativeSequenceScoreRanker():
         sorted_indices = generate_outputs.sequences_scores.argsort(
             descending=True)
         sorted_sequences = generate_outputs.sequences[sorted_indices]
-
         for sequence in sorted_sequences:
-
             sequence = self.tokenizer.decode(sequence).split(' ')
-
             uid_token = sequence[1]
             if not uid_token.startswith("U"):
                 continue
