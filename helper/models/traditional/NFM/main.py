@@ -14,9 +14,9 @@ from helper.evaluation.utility_metrics import NDCG
 from helper.logging.log_helper import create_log_id, logging_config
 from helper.models.model_utils import (EarlyStopping, compute_topks,
                                        load_model, logging_metrics, save_model)
-from helper.models.traditional.NFM.dataloader_nfm import DataLoaderNFM
+from helper.models.traditional.NFM.dataloader import DataLoaderNFM
 from helper.models.traditional.NFM.nfm import NFM
-from helper.models.traditional.NFM.parser_nfm import parse_nfm_args
+from helper.models.traditional.NFM.parser import parse_nfm_args
 from helper.utils import SEED
 
 

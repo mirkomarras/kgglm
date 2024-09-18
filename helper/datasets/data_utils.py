@@ -9,7 +9,13 @@ def get_user_negatives(dataset_name: str) -> Dict[int, List[int]]:
     """
     Returns a dictionary with the user negatives in the dataset, this means the items not interacted in the train and valid sets.
     Note that the ids are the entity ids to be in the same space of the models.
-    """
+
+    Args:
+        dataset_name (str): 
+
+    Returns:
+        Dict[int, List[int]]: Entities ids not interacted with by the user
+    """    
     pid2eid = get_dataset_id2eid(dataset_name, what='product')
     ikg_ids = set([int(eid) for eid in set(pid2eid.values())]) # All the ids of products in the kg
     uid_negatives = {}
@@ -25,6 +31,13 @@ def get_set(dataset_name: str, set_str: str = 'test') -> Dict[int, List[int]]:
     """
     Returns a dictionary containing the user interactions in the selected set {train, valid, test}.
     Note that the ids are the entity ids to be in the same space of the models.
+
+    Args:
+        dataset_name (str): 
+        set_str (str, optional): which split?. Defaults to 'test'.
+
+    Returns:
+        Dict[int, List[int]]: Return item ids for each userid
     """
     data_dir = f"data/{dataset_name}"
     # Note that test.txt has uid and pid from the original dataset so a convertion from dataset to entity id must be done
@@ -48,10 +61,18 @@ def get_user_positives(dataset_name: str) -> Dict[int, List[int]]:
     """
     Returns a dictionary with the user positives in the dataset, this means the items interacted in the train and valid sets.
     Note that the ids are the entity ids to be in the same space of the models.
-    """
+
+    Args:
+        dataset_name (str): 
+
+    Returns:
+        Dict[int, List[int]]: Return user positives for each userid
+    """    
     uid_positives = {}
     train_set = get_set(dataset_name, set_str='train')
     valid_set = get_set(dataset_name, set_str='valid')
-    for uid in tqdm(train_set.keys(), desc="Calculating user negatives", colour="green"):
+    for uid in tqdm(train_set.keys(), desc="Calculating user positives", colour="green"):
         uid_positives[uid] = list(set(train_set[uid]).union(set(valid_set[uid])))
     return uid_positives
+
+

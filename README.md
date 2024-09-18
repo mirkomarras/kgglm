@@ -30,7 +30,7 @@ baselines in effectiveness under both knowledge completion and
 recommendation.*
 
 # Setup
-It is possible to download weights and sampled paths here: [[Link](https://shorturl.at/EIZ8T)]
+It is possible to download weights and sampled paths here: [[**Link**](https://shorturl.at/EIZ8T)]
 
 ### Steps
 
@@ -46,26 +46,30 @@ pip install -r requirements.txt
 pip install . # from root folder
 ```
 ### Sampling training data from datasets
-*Take account that paths are already available on the link above.*
+*Take account that sampled paths are already available in the link above.*
 ```bash
 ./build_datasets_generic.sh # to pretrain
 ./build_datasets_rec.sh # to finetune for recommendation
 ./build_datasets_lp.sh # to finetune for knowledge completion
 ```
 ### Training
-*Take account that weights are already available on the link above.*
+*Take account that weights are already available in the link above.*
 
-
-**Baselines on Recommendation**
+**KGE Baselines on Recommendation**
 
 ```bash
 CUDA_DEVICE=0 && ./run_kge_experiments_recommendation.sh CUDA_DEVICE
 ```
-**Baselines on Link Prediction**
+**KGE Baselines on Link Prediction**
 
 ```bash
 CUDA_DEVICE=0 && ./run_kge_experiments_linkprediction.sh CUDA_DEVICE
 ```
+**CKE, KGAT, BPRMF, NFM, MF**
+```bash
+python helper/models/<knowledge_aware|traditional>/<model>/main.py --dataset <dataset>
+```
+
 **KGGLM pretraining and finetuning**
 ```bash
 CUDA_DEVICE=0 && ./run_kgglm_experiments.sh CUDA_DEVICE

@@ -12,8 +12,8 @@ from helper.datasets.data_utils import get_user_negatives
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.logging.log_helper import create_log_id, logging_config
 from helper.models.knowledge_aware.CKE.CKE import CKE
-from helper.models.knowledge_aware.CKE.dataloader_cke import CKELoader
-from helper.models.knowledge_aware.CKE.parser_cke import parse_args
+from helper.models.knowledge_aware.CKE.dataloader import CKELoader
+from helper.models.knowledge_aware.CKE.parser import parse_args
 from helper.models.model_utils import EarlyStopping, logging_metrics
 from helper.utils import SEED, get_data_dir
 

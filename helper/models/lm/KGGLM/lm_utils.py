@@ -2,24 +2,12 @@ import time
 from typing import Dict, List, Tuple
 
 from tqdm import tqdm
-from transformers import AutoTokenizer, TrainerCallback
+from transformers import TrainerCallback
 
-from helper.datasets.data_utils import get_set, get_user_negatives
+from helper.datasets.data_utils import get_user_negatives
 from helper.knowledge_graphs.kg_macros import RELATION, USER
 from helper.sampling.samplers.constants import LiteralPath, TypeMapper
-from helper.utils import get_data_dir, get_eid_to_name_map
 
-def get_entity_vocab(dataset_name: str, model_name: str) -> List[int]:
-    fast_tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
-    entity_list = get_eid_to_name_map(get_data_dir(dataset_name)).values()
-
-    def tokenize_and_get_input_ids(example):
-        return fast_tokenizer(example).input_ids
-
-    ans = []
-    for entity in entity_list:
-        ans.append(tokenize_and_get_input_ids(entity))
-    return [item for sublist in ans for item in sublist]
 
 def get_user_negatives_and_tokens_ids(dataset_name: str, tokenizer) -> Tuple[Dict[int, List[int]], Dict[int, List[int]]]:
     """
@@ -33,15 +21,6 @@ def get_user_negatives_and_tokens_ids(dataset_name: str, tokenizer) -> Tuple[Dic
         user_negatives_tokens_ids[uid] = [tokenizer.convert_tokens_to_ids(
             f"P{item}") for item in user_negatives_ids[uid]]
     return user_negatives_ids, user_negatives_tokens_ids
-
-def get_user_positives(dataset_name: str) -> Dict[str, List[str]]:
-    uid_positives = {}
-    train_set = get_set(dataset_name, set_str='train')
-    valid_set = get_set(dataset_name, set_str='valid')
-    for uid in tqdm(train_set.keys(), desc="Calculating user negatives", colour="green"):
-        uid_positives[uid] = list(
-            set(train_set[uid]).union(set(valid_set[uid])))
-    return uid_positives
 
 def _initialise_type_masks(tokenizer, allow_special=False):
     ent_mask = []

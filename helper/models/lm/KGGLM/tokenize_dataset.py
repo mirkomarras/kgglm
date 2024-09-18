@@ -14,14 +14,6 @@ from tokenizers import Tokenizer, models, pre_tokenizers, processors, trainers
 def tokenize_function(examples: str, context_length: int = 200):
     return tokenizer(examples["path"], truncation=True, padding=True, max_length=context_length)
 
-def read_triplets(file_path):
-    triplets = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            head, relation, tail = line.strip().split('\t')
-            triplets.append((head, relation, tail))
-    return triplets
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     # Data arguments

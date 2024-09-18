@@ -16,8 +16,8 @@ from helper.logging.log_helper import create_log_id, logging_config
 from helper.models.model_utils import (EarlyStopping, compute_topks,
                                        load_model, logging_metrics, save_model)
 from helper.models.traditional.BPRMF.bprmf import BPRMF
-from helper.models.traditional.BPRMF.dataloader_bprmf import DataLoaderBPRMF
-from helper.models.traditional.BPRMF.parser_bprmf import parse_bprmf_args
+from helper.models.traditional.BPRMF.dataloader import DataLoaderBPRMF
+from helper.models.traditional.BPRMF.parser import parse_bprmf_args
 from helper.utils import SEED
 
 

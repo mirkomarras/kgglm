@@ -14,8 +14,8 @@ from helper.datasets.data_utils import get_user_negatives
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.logging.log_helper import create_log_id, logging_config
 from helper.models.knowledge_aware.KGAT.KGAT import KGAT
-from helper.models.knowledge_aware.KGAT.dataloader_kgat import KGATLoader
-from helper.models.knowledge_aware.KGAT.parser_kgat import parse_args
+from helper.models.knowledge_aware.KGAT.dataloader import KGATLoader
+from helper.models.knowledge_aware.KGAT.parser import parse_args
 from helper.models.model_utils import EarlyStopping, logging_metrics
 from helper.utils import SEED, get_model_data_dir
 
