@@ -35,7 +35,8 @@ def parse_args():
     """Link Prediction Task"""
     parser.add_argument('--lp', type=bool, default=False,
                         help='Train and evaluate on lp dataset')
-    args = parser.parse_args()
+    args,ukn = parser.parse_known_args()
+
     args.preprocessed_torchkge=get_preprocessed_torchkge_path(args.dataset)
     args.model_type = MODEL
     args.weight_dir = get_weight_dir(MODEL, args.dataset)

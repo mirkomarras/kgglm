@@ -17,7 +17,7 @@ from torchkge.utils import DataLoader
 from helper.utils import SEED
 from helper.models.model_utils import EarlyStopping, logging_metrics
 from helper.evaluation.eval_metrics import evaluate_rec_quality
-from hole import HolE
+from helper.models.kge.HolE.hole import HolE
 from helper.models.kge.HolE.parser_hole import parse_args
 from helper.data_mappers.mapper_torchkge import get_watched_relation_idx
 

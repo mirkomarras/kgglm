@@ -17,7 +17,7 @@ from torchkge.utils import DataLoader
 from helper.utils import SEED
 from helper.models.model_utils import EarlyStopping, logging_metrics
 from helper.evaluation.eval_metrics import evaluate_rec_quality
-from rescal import RESCAL
+from helper.models.kge.RESCAL.rescal import RESCAL
 from helper.models.kge.RESCAL.parser_rescal import parse_args
 from helper.data_mappers.mapper_torchkge import get_watched_relation_idx
 

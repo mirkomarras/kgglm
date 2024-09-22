@@ -372,7 +372,6 @@ class KGSamplerLinkPrediction:
                  itemset_type=itemset_type,
                  REL_TYPE2ID=self.rel_type2id,
                  collaborative=collaborative,
-                 dataset_info=self.dataset_info,
                  with_type=with_type,
                  start_ent_type=start_ent_type,
                  end_ent_type=end_ent_type)

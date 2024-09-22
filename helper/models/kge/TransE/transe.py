@@ -9,6 +9,7 @@ import torch.nn.functional as F
 from torch.nn.init import xavier_uniform_
 from torchkge.models.interfaces import TranslationModel
 
+
 class TransE(TranslationModel):
     """Implementation of TransE model detailed in 2013 paper by Bordes et al..
     This class inherits from the
@@ -48,18 +49,20 @@ class TransE(TranslationModel):
         distribution and then normalized.
 
     """
-    def __init__(self, num_entities, num_relations, margin=1,dim=100):
+
+    def __init__(self, num_entities, num_relations, margin=1, dim=100):
         super().__init__(num_entities, num_relations, dissimilarity_type='L2')
-        self.margin=margin
-        self.dim = dim 
+        self.margin = margin
+        self.dim = dim
         self.ent_embeddings = nn.Embedding(num_entities, self.dim)
         self.rel_embeddings = nn.Embedding(num_relations, self.dim)
-        
+
         xavier_uniform_(self.ent_embeddings.weight.data)
         xavier_uniform_(self.rel_embeddings.weight.data)
 
         self.normalize_parameters()
-        self.rel_embeddings.weight.data = F.normalize(self.rel_embeddings.weight.data, p=2, dim=1)
+        self.rel_embeddings.weight.data = F.normalize(
+            self.rel_embeddings.weight.data, p=2, dim=1)
 
         self.loss = nn.MarginRankingLoss(margin=self.margin)
 
@@ -69,7 +72,8 @@ class TransE(TranslationModel):
         the end of training as well.
 
         """
-        self.ent_embeddings.weight.data = F.normalize(self.ent_embeddings.weight.data, p=2, dim=1)
+        self.ent_embeddings.weight.data = F.normalize(
+            self.ent_embeddings.weight.data, p=2, dim=1)
 
     def get_embeddings(self):
         """Return the embeddings of entities and relations.
@@ -84,7 +88,7 @@ class TransE(TranslationModel):
         self.normalize_parameters()
         return self.ent_embeddings.weight.data, self.rel_embeddings.weight.data
 
-    def forward(self, h, t, nh, nt, r,nr=None):
+    def forward(self, h, t, nh, nt, r, nr=None):
         """
 
         Parameters
@@ -110,7 +114,7 @@ class TransE(TranslationModel):
             Scoring function evaluated on negatively sampled triples.
 
         """
-        pos = self.scoring_function(h,t, r)
+        pos = self.scoring_function(h, t, r)
 
         if nr is None:
             nr = r
@@ -119,9 +123,9 @@ class TransE(TranslationModel):
             # in that case, several negative samples are sampled from each fact
             n_neg = int(nh.shape[0] / nr.shape[0])
             pos = pos.repeat(n_neg)
-            neg = self.scoring_function(nh,nt,nr.repeat(n_neg))
+            neg = self.scoring_function(nh, nt, nr.repeat(n_neg))
         else:
-            neg = self.scoring_function(nh,nt,nr)
+            neg = self.scoring_function(nh, nt, nr)
 
         return pos, neg
 
@@ -136,5 +140,4 @@ class TransE(TranslationModel):
         h = F.normalize(self.ent_embeddings(h), p=2, dim=1)
         t = F.normalize(self.ent_embeddings(t), p=2, dim=1)
         r = self.rel_embeddings(r)
-        return -self.dissimilarity(h+r,t)
-
+        return -self.dissimilarity(h+r, t)

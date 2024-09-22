@@ -16,7 +16,7 @@ from torchkge.utils import DataLoader
 from helper.utils import SEED
 from helper.models.model_utils import EarlyStopping, logging_metrics
 from helper.evaluation.eval_metrics import evaluate_rec_quality
-from convkb import ConvKB
+from helper.models.kge.ConvKB.convkb import ConvKB
 from helper.models.kge.ConvKB.parser_convkb import parse_args
 from helper.data_mappers.mapper_torchkge import get_watched_relation_idx
 

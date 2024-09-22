@@ -16,7 +16,7 @@ from helper.models.model_utils import EarlyStopping, logging_metrics
 from helper.logging.log_helper import logging_config, create_log_id
 from helper.datasets.data_utils import get_set
 from helper.evaluation.eval_metrics import evaluate_rec_quality
-from transh import TransH
+from helper.models.kge.TransH.transh import TransH
 from helper.models.kge.TransH.parser_transh import parse_args
 from helper.data_mappers.mapper_torchkge import get_watched_relation_idx
 

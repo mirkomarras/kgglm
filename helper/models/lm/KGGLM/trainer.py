@@ -199,7 +199,7 @@ class PathPretrainTrainer(Trainer):
 
         metrics_ = dict()
 
-        _, avg_rec_quality_metrics = evaluate_rec_quality(self.dataset_name, topks_rec, self.test_set)
+        _, avg_rec_quality_metrics = evaluate_rec_quality(self.dataset_name, topks_rec, self.test_set,method_name='KGGLM')
         for k in avg_rec_quality_metrics:
             metrics_[f'eval_{k}'] = np.mean(avg_rec_quality_metrics[k])
         return metrics_

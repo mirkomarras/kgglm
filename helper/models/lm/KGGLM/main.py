@@ -59,7 +59,7 @@ def initialize_model_and_update_config(tokenizer, args):
     else:
         # New model training logic
         model = KGGLM(AutoConfig.from_pretrained(args.model, **config_kwargs))
-        print('TRAINING NEW MODEL')
+        print('[+] Training from Scratch')
 
     update_model_config(model, tokenizer, args)
     return model
@@ -195,7 +195,7 @@ if __name__ == "__main__":
             # track hyperparameters and run metadata
             config=vars(args)
         )
-    print(args)
+    
 
     TOKENIZER_TYPE = "WordLevel"
     model_name = args.model
@@ -206,11 +206,9 @@ if __name__ == "__main__":
     tokenizer_file = os.path.join(tokenizer_dir, f"{TOKENIZER_TYPE}.json")
 
     dirpath = get_data_dir(dataset_name)
-    data_dir_mapping = os.path.join(dirpath, f'mapping/')
     kg = KGsampler(args.dataset)
     sample_size = args.sample_size
     dataset_hop_size = args.n_hop
-    # end-to-end to use the same tokenizer as pearlm
     TOKENIZED_DATASET_PATH = os.path.join(
         dataset_root_dir, f"{TOKENIZER_TYPE}/{args.task}_{sample_size}_{dataset_hop_size}_tokenized_dataset.hf")
     TOKEN_INDEX_PATH = os.path.join(dirpath, KGsampler.TOKEN_INDEX_FILE)

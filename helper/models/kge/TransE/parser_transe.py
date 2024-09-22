@@ -1,9 +1,11 @@
 import argparse
 import os
 import sys
-from helper.models.kge.utils import get_weight_dir, get_weight_ckpt_dir,get_preprocessed_torchkge_path
+from helper.models.kge.utils import get_weight_dir, get_weight_ckpt_dir, get_preprocessed_torchkge_path
 
 MODEL = 'TransE'
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description=F"Run {MODEL}.")
     parser.add_argument('--dataset', nargs='?', default='ml1m',
@@ -20,25 +22,25 @@ def parse_args():
                         help='Learning rate.')
     parser.add_argument('--K', type=int, default=10,
                         help='Topk size')
-    parser.add_argument('--save_interval', type=int, default=1, 
+    parser.add_argument('--save_interval', type=int, default=1,
                         help='After how many epochs save ckpt')
     parser.add_argument('--margin', type=int, default=1,
                         help='margin')
     parser.add_argument('--use_cuda', type=str, default='None',
                         help='use cuda for dataloader transE, all or none')
-    parser.add_argument('--print_every', type=int, default=1, 
+    parser.add_argument('--print_every', type=int, default=1,
                         help='Iter interval of printing loss.')
 
-    parser.add_argument('--task', type=str, default='train', 
+    parser.add_argument('--task', type=str, default='train',
                         help='Train or evaluate on previous weights? specify train or evaluate')
-    parser.add_argument('--model_checkpoint', type=str, default='', 
+    parser.add_argument('--model_checkpoint', type=str, default='',
                         help='specify the name of the checkpoint .pth')
     """Link Prediction Task"""
     parser.add_argument('--lp', type=bool, default=False,
                         help='Train and evaluate on lp dataset')
     args = parser.parse_args()
 
-    args.preprocessed_torchkge=get_preprocessed_torchkge_path(args.dataset)
+    args.preprocessed_torchkge = get_preprocessed_torchkge_path(args.dataset)
     args.model_type = MODEL
     args.weight_dir = get_weight_dir(MODEL, args.dataset)
     args.weight_dir_ckpt = get_weight_ckpt_dir(MODEL, args.dataset)

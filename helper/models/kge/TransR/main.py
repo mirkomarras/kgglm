@@ -18,7 +18,7 @@ from torchkge.utils import DataLoader
 from helper.utils import SEED
 from helper.datasets.data_utils import get_set
 from helper.evaluation.eval_metrics import evaluate_rec_quality
-from transr import TransR
+from helper.models.kge.TransR.transr import TransR
 from helper.models.kge.TransR.parser_transr import parse_args
 from helper.data_mappers.mapper_torchkge import get_watched_relation_idx
 

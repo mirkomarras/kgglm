@@ -2,7 +2,6 @@ from collections import defaultdict
 import numpy as np
 from helper.utils import get_data_dir
 from tqdm import tqdm
-import pandas as pd
 import os
 import pandas as pd
 import random
@@ -234,7 +233,7 @@ class KGsampler:
             path, KGsampler.TOKEN_INDEX_FILE)
 
         self.dataset_name = dataset_name
-        print('Loading from ', path, ' the dataset ', dataset_name)
+        #print('Loading from ', path, ' the dataset ', dataset_name)
         item_list_file = os.path.join(
             path, 'i2kg_map.txt')  # f'item_list.txt')
         kg_filepath = os.path.join(path,  f'kg_final.txt')
@@ -309,11 +308,8 @@ class KGsampler:
 
     def load_kg(self, kg_filepath, undirected=True):
         kg = defaultdict()
-        # kg_np = np.loadtxt(kg_filepath, np.uint32)
         kg_np = pd.read_csv(kg_filepath, sep='\t').to_numpy()
-        print(kg_np.shape)
         kg_np = np.unique(kg_np, axis=0)
-        print(kg_np.shape)
         for triple in kg_np:
             h, r, t = triple
             if h not in kg:
@@ -328,11 +324,9 @@ class KGsampler:
         return kg, kg_np
 
     def build_token_index(self):
-
         aug_kg = self.aug_kg
         REL_TYPE2ID = self.rel_type2id
         kg_tokens = set()
-
         def get_token_ent_type(ent_type):
             token_type = None
             if ent_type == USER:
@@ -376,8 +370,6 @@ class KGsampler:
 
         # undirected knowledge graph hypotesis (for each relation, there exists its inverse)
 
-        # with mp.Pool(nproc) as pool:
-        #    pool.starmap( functools.partial(func,
         for uid in tqdm(list(self.user_dict)):
             func(uid,
                  dataset_name=self.dataset_name,
@@ -392,19 +384,16 @@ class KGsampler:
                  itemset_type=itemset_type,
                  REL_TYPE2ID=self.rel_type2id,
                  collaborative=collaborative,
-                 dataset_info=self.dataset_info,
                  with_type=with_type,
                  start_ent_type=start_ent_type,
                  end_ent_type=end_ent_type)
-        #    ,
-        #        tqdm([[uid] for uid in self.user_dict ] ))
 
     def load_augmented_kg_V2(self):
         kg, user_dict, items = self.kg, self.user_dict, self.items
 
         R2T = self.rel_id2type
         KG2T = KG_RELATION[self.dataset_name]
-        print(R2T)
+        #print(R2T)
 
         PROD_ENT, U2P_REL = MAIN_PRODUCT_INTERACTION[self.dataset_name]
 
@@ -441,7 +430,6 @@ class KGsampler:
                     if t in self.aug_kg[PROD_ENT]:
                         # swap them , to have product as head, just to reduce amount of code below
                         h1, t1 = t, h
-                    # print(rel, h1, t1, '::::',h,t)
                     if h1 not in self.aug_kg[PROD_ENT]:
                         self.aug_kg[PROD_ENT][h1] = dict()
                     if R2T[rel] not in self.aug_kg[PROD_ENT][h1]:

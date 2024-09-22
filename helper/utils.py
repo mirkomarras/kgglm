@@ -103,3 +103,9 @@ def get_dataset_info_dir(dataset_name: str) -> str:
     if not os.path.isdir(ans):
         os.makedirs(ans)
     return ans
+
+
+def get_model_dir(model_name: str,model_type:str)->str:
+    allowed_model_type={'kge','knowledge_aware','lm','rl'}
+    assert model_type in allowed_model_type
+    return os.path.join("helper/models",model_type,model_name)
