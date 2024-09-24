@@ -36,26 +36,16 @@ def parse_args():
                         help='Regularization for user and item embeddings.')
     parser.add_argument('--lr', type=float, default=0.001,
                         help='Learning rate.')
-
     parser.add_argument('--K', type=int, default=10,
                         help='Topk size')
     parser.add_argument('--save_interval', type=int, default=10,
                         help='After how many epochs save ckpt')
-
     parser.add_argument('--print_every', type=int, default=20,
                         help='Iter interval of printing loss.')
     parser.add_argument('--l1_flag', type=bool, default=True,
                         help='Flase: using the L2 norm, True: using the L1 norm.')
-    parser.add_argument('--wandb', action="store_true",
-                        help='whether to log to wandb (requires setting the api key from command line as wandb login YOUR-API-KEY)')
-    parser.add_argument(
-        "--wandb_entity",
-        required="--wandb" in sys.argv,
-        type=str,
-        help="Entity name to push to the wandb logged data, in case args.wandb is specified.",
-    )
 
-    args = parser.parse_args()
+    args,unk = parser.parse_known_args()
     args.model_type = MODEL
     args.weight_dir = get_weight_dir(MODEL, args.dataset)
     args.weight_dir_ckpt = get_weight_ckpt_dir(MODEL, args.dataset)

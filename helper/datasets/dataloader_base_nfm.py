@@ -14,7 +14,7 @@ class DataLoaderBase(object):
         self.use_pretrain = args.use_pretrain
         self.pretrain_embedding_dir = args.pretrain_embedding_dir
         if self.data_name in ['ml1m','lfm1m']:
-            self.data_dir = os.path.join(args.data_dir, self.data_name,'preprocessed','kgatstyle')
+            self.data_dir = os.path.join(args.data_dir, self.data_name,'preprocessed','kgat')
         else:
             self.data_dir = os.path.join(args.data_dir, self.data_name)
         self.train_file = os.path.join(self.data_dir, 'train.txt')
@@ -63,10 +63,7 @@ class DataLoaderBase(object):
 
 
     def load_kg(self, filename):
-        if self.data_name in ['ml1m','lfm1m']:
-            kg_data = pd.read_csv(filename, sep='\t', names=['h', 'r', 't'], skiprows=1, engine='python')
-        else:
-            kg_data = pd.read_csv(filename, sep=' ', names=['h', 'r', 't'], engine='python')
+        kg_data = pd.read_csv(filename, sep=' ', names=['h', 'r', 't'], engine='python')
         kg_data = kg_data.drop_duplicates()
         return kg_data
 

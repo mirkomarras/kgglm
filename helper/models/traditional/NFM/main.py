@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.evaluation.utility_metrics import NDCG
-from helper.logging.log_helper import create_log_id, logging_config
+from helper.logging.log_helper import create_log_id, logging_config,logging
 from helper.models.model_utils import (EarlyStopping, compute_topks,
                                        load_model, logging_metrics, save_model)
 from helper.models.traditional.NFM.dataloader import DataLoaderNFM
@@ -109,7 +109,7 @@ def train(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Load data
-    data = DataLoaderNFM(args)
+    data = DataLoaderNFM(args,logging)
 
     # Initialize model
     user_pre_embed = torch.tensor(data.user_pre_embed) if args.use_pretrain == 1 else None
@@ -143,7 +143,7 @@ def train(args):
             pos_feature_values, neg_feature_values = data.generate_train_batch(data.train_user_dict)
             pos_feature_values = pos_feature_values.to(device)
             neg_feature_values = neg_feature_values.to(device)
-            batch_loss = model(pos_feature_values, neg_feature_values, is_train=True)
+            batch_loss = model.forward(pos_feature_values, neg_feature_values, is_train=True)
 
             if np.isnan(batch_loss.cpu().detach().numpy()):
                 #logging.info('ERROR: Epoch {:04d} Iter {:04d} / {:04d} Loss is nan.'.format(epoch, iter, n_batch))

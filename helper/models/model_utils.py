@@ -88,7 +88,9 @@ def compute_topks(cf_scores, train_user_dict, valid_user_dict, test_user_dict, u
     rank_indices = rank_indices.cpu()
 
     topk_items_dict = {}  # Dictionary to store top-k items for each user
+
     maxK = max(Ks)
+
     for u in user_ids:
         topk_items = [item_ids[i] for i in rank_indices[u]][:maxK]  # Convert indices to real item IDs
         topk_items_dict[u] = topk_items

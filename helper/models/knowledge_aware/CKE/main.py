@@ -131,7 +131,7 @@ def train(args):
         # Optional: Save model and metrics at each epoch or at specific intervals
         if epoch % args.save_interval == 0 or epoch == args.epoch - 1:
             torch.save(model.state_dict(), os.path.join(args.weight_dir_ckpt, f'{args.model_type}_epoch_{epoch}_e{args.embed_size}_bs{args.batch_size}_lr{args.lr}.pth'))
-        # Final model save and cleanup
+    # Final model save and cleanup
     torch.save(model.state_dict(), os.path.join(args.weight_dir, f'{args.model_type}_epoch_{epoch}_e{args.embed_size}_bs{args.batch_size}_lr{args.lr}.pth'))
     logging.info(f'Best evaluation results at epoch {early_stopping.best_epoch} with NDCG: {early_stopping.best_score:.4f}')
 

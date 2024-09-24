@@ -1,9 +1,10 @@
-import collections
 import random as rd
 from typing import Dict, List
 
 import numpy as np
+
 from helper.datasets.kgatstyle_dataset import KGATStyleDataset
+
 
 class CKELoader(KGATStyleDataset):
     def __init__(self, args, path: str, batch_style: str = 'map'):

@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.evaluation.eval_utils import save_topks_items_results
-from helper.evaluation.utility_metrics import NDCG, PRECISION, RECALL
+from helper.evaluation.utility_metrics import NDCG
 from helper.logging.log_helper import create_log_id, logging_config
 from helper.models.model_utils import (EarlyStopping, compute_topks,
                                        load_model, logging_metrics, save_model)
@@ -46,8 +46,7 @@ def evaluate(model, dataloader, Ks, device):
                 batch_scores = model(batch_user_ids, item_ids, is_train=False)  # (n_batch_users, n_items)
 
             batch_scores = batch_scores.cpu()
-            topk_items_dict = compute_topks(batch_scores, train_user_dict, valid_user_dict, test_user_dict, batch_user_ids.cpu().numpy(),
-                                          item_ids.cpu().numpy(), Ks)
+            topk_items_dict = compute_topks(batch_scores, train_user_dict, valid_user_dict, test_user_dict, batch_user_ids.cpu().numpy(),item_ids.cpu().numpy(), Ks)
             avg_metrics_dict = {k: evaluate_rec_quality(dataloader.data_name, topk_items_dict, test_user_dict, k)[1] for k in Ks}
             for k in Ks:
                 for m in avg_metrics_dict[k].keys():
@@ -109,10 +108,11 @@ def train(args):
             batch_user, batch_pos_item, batch_neg_item = batch_user.to(device), batch_pos_item.to(
                 device), batch_neg_item.to(device)
 
-            optimizer.zero_grad()
+
             batch_loss = model(batch_user, batch_pos_item, batch_neg_item, is_train=True)
             batch_loss.backward()
             optimizer.step()
+            optimizer.zero_grad()
             total_loss += batch_loss.item()
 
             if (iter % args.print_every) == 0:

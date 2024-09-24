@@ -154,11 +154,6 @@ class KGATLoader(KGATStyleDataset):
         assert sum(new_h_list) == sum(all_h_list)
         assert sum(new_t_list) == sum(all_t_list)
         assert sum(new_r_list) == sum(all_r_list)
-        # try:
-        #     assert sum(new_v_list) == sum(all_v_list)
-        # except Exception:
-        #     print(sum(new_v_list), '\n')
-        #     print(sum(all_v_list), '\n')
         print('\tsort all data done.')
 
 
