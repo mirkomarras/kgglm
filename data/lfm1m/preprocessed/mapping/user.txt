@@ -1,4 +1,4 @@
-new_id	uid
+new_id	rating_id
 0	1003134
 1	1003798
 2	1005261

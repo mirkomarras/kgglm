@@ -9,7 +9,7 @@ import torch
 from helper.datasets.kg_dataset_base import KARSDataset
 from helper.knowledge_graphs.kg_macros import LFM1M, ML1M, PRODUCT, USER
 from helper.models.kge.utils import get_weight_ckpt_dir
-from helper.utils import (SEED, check_dir, get_data_dir, get_dataset_info_dir,
+from helper.utils import (check_dir, get_data_dir, get_dataset_info_dir,
                           get_model_dir)
 
 

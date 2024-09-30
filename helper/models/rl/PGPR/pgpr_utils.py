@@ -17,8 +17,6 @@ from helper.utils import get_model_dir
 # Dataset names.
 ML1M = 'ml1m'
 LFM1M = 'lfm1m'
-CELL = 'cellphones'
-COCO = 'coco'
 
 MODEL = 'pgpr'
 TRANSE='TransE'

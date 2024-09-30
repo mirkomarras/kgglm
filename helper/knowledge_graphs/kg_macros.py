@@ -12,7 +12,7 @@ ENTITY = 'entity'
 RELATION = 'relation'
 INTERACTION = {
     ML1M: "watched",
-    LFM1M: "listened",
+    LFM1M: "listened", # should be listened
 }
 SELF_LOOP = 'self_loop'
 PRODUCED_BY_PRODUCER = 'produced_by_producer'
