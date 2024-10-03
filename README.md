@@ -252,6 +252,19 @@ This code is provided for educational purposes and aims to facilitate reproducti
 If you find any bugs or would like to contribute new models, training protocols, etc, please let us know.
 
 Please feel free to file issues and pull requests on the repo and we will address them as we can.
+
+# Citation
+If you want to use our codes in your research, please cite:
+```
+@inproceedings{kgglm2024,
+  Author = {Balloccu Giacomo, Boratto Ludovico, Gianni Fenu, Mirko Marras, Alessandro Soccol},
+  Booktitle = {18th ACM Conference on Recommender Systems (RecSys '24)},
+  Organization = {ACM},
+  Title = {KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation},
+  Year = {2024}
+}
+```
+
 # License
 This code is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
