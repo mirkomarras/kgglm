@@ -18,16 +18,18 @@
 on entity and relation representations for several steps along the
 pipeline, with knowledge completion and path reasoning being
 the most influential. Despite their similarities, the most effective
-representation methods for these steps differ, leading to inefficien-
-cies, limited representativeness, and reduced interpretability. In this
-paper, we introduce **KGGLM**, a decoder-only Transformer model
+representation methods for these steps differ, leading to inefficiencies, limited representativeness, and reduced interpretability. In this
+paper, we introduce KGGLM, a decoder-only Transformer model
 designed for generalizable knowledge representation learning to
 support recommendation. The model is trained on generic paths
 sampled from the knowledge graph to capture foundational pat-
 terns, and then fine-tuned on paths specific of the downstream step
-(knowledge completion and path reasoning in our case). Experiments on ML1M and LFM1M show that KGGLM beats twenty-two
+(knowledge completion and path reasoning in our case). Experi-
+ments on ML1M and LFM1M show that KGGLM beats twenty-two
 baselines in effectiveness under both knowledge completion and
 recommendation.*
+# Paper
+Paper under publication.
 
 # Setup
 It is possible to download weights and sampled paths here: [[**Link**](https://shorturl.at/EIZ8T)]
@@ -45,6 +47,13 @@ Install dependencies
 pip install -r requirements.txt
 pip install . # from root folder
 ```
+### Data Mapper
+It is mandatory to first run the mapper corresponding to the model in the `helper/data_mappers` folder.
+
+To run:
+- NFM, FM, BPRMF, KGAT, CKE, CFKG: `python mapper_kgat.py --dataset <dataset>`
+- PGPR, UCPR: `python mapper_rl.py --data ml1m --model pgpr`
+- CAFE: `python mapper_cafe.py --data ml1m`
 ### Sampling training data from datasets
 *Take account that sampled paths are already available in the link above.*
 ```bash
@@ -61,13 +70,41 @@ pip install . # from root folder
 CUDA_DEVICE=0 && ./run_kge_experiments_recommendation.sh CUDA_DEVICE
 ```
 **KGE Baselines on Link Prediction**
-
 ```bash
 CUDA_DEVICE=0 && ./run_kge_experiments_linkprediction.sh CUDA_DEVICE
 ```
-**CKE, KGAT, BPRMF, NFM, MF**
+
+
+**CKE, KGAT, BPRMF, NFM, MF, CFKG**
 ```bash
 python helper/models/<knowledge_aware|traditional>/<model>/main.py --dataset <dataset>
+```
+**PGPR**
+
+
+*It is mandatory to train TransE on the relevant dataset first.*
+```bash
+python preprocess.py --dataset ml1m
+python preprocess_embeddings.py —-dataset lfm1m —-name TransE
+python train_agents.py —-epochs 1 -—dataset lfm1m
+python gridsearch.py —-dataset lfm1m 
+python test_agents.py —-dataset lfm1m —-hidden [hiddenSize taken after gridsearce; e.g. --hidden 128 64]
+```
+
+**CAFE**
+
+
+*It is mandatory to train TransE on the relevant dataset first and then execute `preprocess_embeddings.py` inside the PGPR folder as above*.
+```bash
+python preprocess_embeddings.py —-dataset ml1m —name TransE
+python preprocess.py --dataset ml1m
+```
+
+
+
+**PLM-Rec**
+```bash
+python helper/models/lm/PLM/main.py
 ```
 
 **KGGLM pretraining and finetuning**
@@ -89,7 +126,7 @@ CUDA_DEVICE=0 && ./run_kge_evaluation_linkprediction.sh CUDA_DEVICE
 ```
 
 # Data
-*Data is already available in the repository while paths can be downloaded from the link above. The paths_random_walk folder need to be placed on the corresponding dataset folder (e.g. data/lfm1m/paths_random_walk)*
+*The data is already available in the repository, while the paths can be downloaded from the previous link. The paths_random_walk folder must be placed in the folder of the corresponding dataset (e.g. data/lfm1m/paths_random_walk)*.
 
 
 ### Datasets info

@@ -12,10 +12,10 @@ from tqdm import tqdm
 import torch
 from torch.nn import functional as F
 
-from helper.datasets.data_utils import get_user_positives
+from helper.datasets.datasets_utils import get_user_positives
 from helper.models.rl.CAFE.parser import parse_args
 from helper.evaluation.eval_utils import save_topks_items_results, save_topks_paths_results
-from helper.knowledge_graphs.cafe_kg import USER
+from helper.knowledge_graphs.kg_cafe import USER
 from helper.evaluation.eval_metrics import evaluate_rec_quality, print_rec_quality_metrics
 from helper.models.rl.CAFE.data_utils import KGMask
 from helper.models.rl.CAFE.symbolic_model import create_symbolic_model

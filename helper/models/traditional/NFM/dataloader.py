@@ -2,7 +2,7 @@ import numpy as np
 import scipy.sparse as sp
 import torch
 
-from helper.datasets.dataloader_base_nfm import DataLoaderBase
+from helper.datasets.dataloader_base import DataLoaderBase
 
 
 class DataLoaderNFM(DataLoaderBase):

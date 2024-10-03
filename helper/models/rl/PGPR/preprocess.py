@@ -1,7 +1,7 @@
 import argparse
 import os
 
-from helper.datasets.kg_dataset_base import KARSDataset
+from helper.datasets.KARSDataset import KARSDataset
 from helper.evaluation.eval_utils import get_set
 from helper.knowledge_graphs.pgpr_kg import PGPRKnowledgeGraph
 from helper.models.rl.PGPR.pgpr_utils import (TMP_DIR, load_dataset,

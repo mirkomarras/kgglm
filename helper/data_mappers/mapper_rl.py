@@ -11,28 +11,25 @@ from helper.knowledge_graphs.kg_macros import PRODUCT
 from helper.utils import check_dir, get_data_dir, get_model_data_dir
 
 
-class MapperPGPR(MapperBase):
+class MapperRL(MapperBase):
     ''''''
     def __init__(self, args):
         super().__init__(args)
-        self.map_to_PGPR()
+        self.map_to_rl()
         self.get_splits()
-        self.write_split_PGPR()
+        self.write_split_rl()
         self.mapping_folder = os.path.join(get_data_dir(args.data), "mapping")
         check_dir(self.mapping_folder)
         self.write_uid_pid_mappings()
 
-    def map_to_PGPR(self):
+    def map_to_rl(self):
         dataset_name = self.dataset_name
         input_folder = get_data_dir(dataset_name)
         output_folder = get_model_data_dir(self.model_name, dataset_name)
-
         check_dir(output_folder)
-
         relations_df = pd.read_csv(os.path.join(input_folder, "r_map.txt"), sep="\t")
         rid2entity_name = dict(zip(relations_df.id, relations_df.name.apply(lambda x: x.split("_")[-1])))
         rid2relation_name = dict(zip(relations_df.id, relations_df.name))
-
         # Save users entities
         user_df = pd.read_csv(os.path.join(input_folder, "users.txt"), sep="\t")
         user_df.insert(0, "new_id", list(range(user_df.shape[0])))
@@ -41,9 +38,7 @@ class MapperPGPR(MapperBase):
                        index=False,
                        sep="\t",
                        compression="gzip")
-
         self.ratings_uid2new_id = dict(zip([str(uid) for uid in list(user_df.uid)], user_df.new_id))
-
         # Save products entities
         eid2new_id = {}
         pid2kg_df = pd.read_csv(os.path.join(input_folder, "i2kg_map.txt"), sep="\t")
@@ -55,7 +50,6 @@ class MapperPGPR(MapperBase):
                            compression="gzip")
         self.ratings_pid2new_id = dict(zip([str(pid) for pid in list(products_df.pid)], products_df.new_id))
         eid2new_id[PRODUCT] = dict(zip(pid2kg_df.eid, pid2kg_df.new_id))
-
         # Get external entities by relation and save them
         kg_df = pd.read_csv(os.path.join(input_folder, "kg_final.txt"), sep="\t")
         for rid, entity_name in rid2entity_name.items():
@@ -86,7 +80,7 @@ class MapperPGPR(MapperBase):
             curr_rel_file.close()
 
 
-    def write_split_PGPR(self):
+    def write_split_rl(self):
         dataset_name = self.dataset_name
         output_folder = get_model_data_dir(self.model_name, dataset_name)
         for set in ["train", "valid", "test"]:
@@ -105,7 +99,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data', type=str, default='ml1m',
                         help='One of {ML1M, LFM1M}')
-    parser.add_argument('--model', type=str, default='pgpr', help='')
+    parser.add_argument('--model', type=str, default='pgpr', help='One of {pgpr | ucpr}')
     parser.add_argument('--train_size', type=float, default=0.6,
                         help='size of the train set expressed in 0.x')
     parser.add_argument('--valid_size', type=float, default=0.2,
@@ -113,7 +107,7 @@ def main():
     args = parser.parse_args()
     
     pd.options.mode.copy_on_write = True
-    MapperPGPR(args)
+    MapperRL(args)
 
 
 if __name__ == '__main__':

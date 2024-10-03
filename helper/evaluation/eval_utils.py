@@ -6,7 +6,7 @@ from typing import Dict, List
 
 from tqdm import tqdm
 
-from helper.datasets.data_utils import get_set, get_user_negatives
+from helper.datasets.datasets_utils import get_set, get_user_negatives
 from helper.evaluation.beyond_accuracy_metrics import (DIVERSITY, NOVELTY,
                                                        SERENDIPITY)
 from helper.evaluation.utility_metrics import MRR, NDCG, PRECISION, RECALL

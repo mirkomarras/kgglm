@@ -1,6 +1,7 @@
 import logging
+import logging.handlers
 import os
-
+import sys
 
 def create_log_id(dir_path):
     log_count = 0
@@ -38,3 +39,17 @@ def logging_config(folder=None, name=None,
         logconsole.setFormatter(formatter)
         logging.root.addHandler(logconsole)
     return folder
+
+# {Logger for RL models}
+
+def get_logger(logname):
+    logger = logging.getLogger(logname)
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('[%(levelname)s]  %(message)s')
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+    fh = logging.handlers.RotatingFileHandler(logname, mode='w')
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
+    return logger

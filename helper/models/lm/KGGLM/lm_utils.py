@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple
 from tqdm import tqdm
 from transformers import TrainerCallback
 
-from helper.datasets.data_utils import get_user_negatives
+from helper.datasets.datasets_utils import get_user_negatives
 from helper.knowledge_graphs.kg_macros import RELATION, USER
 from helper.sampling.samplers.constants import LiteralPath, TypeMapper
 

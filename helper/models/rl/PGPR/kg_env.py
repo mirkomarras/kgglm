@@ -1,6 +1,6 @@
 
 
-from __future__ import absolute_import, division, print_function
+
 
 import random
 
@@ -12,8 +12,8 @@ from helper.knowledge_graphs.kg_macros import SELF_LOOP, USER
 from helper.knowledge_graphs.kg_utils import (KG_RELATION,
                                               MAIN_PRODUCT_INTERACTION,
                                               PATH_PATTERN)
-from helper.models.rl.PGPR.pgpr_utils import load_kg, load_labels, load_embed
-
+from helper.models.rl.PGPR.pgpr_utils import load_labels, TMP_DIR
+from helper.datasets.datasets_utils import load_embed, load_kg
 
 class KGState(object):
     def __init__(self, embed_size, history_len=1):
@@ -46,15 +46,14 @@ class BatchKGEnvironment(object):
         self.max_acts = max_acts
         self.act_dim = max_acts + 1  # Add self-loop action, whose act_idx is always 0.
         self.max_num_nodes = max_path_len + 1  # max number of hops (= #nodes - 1)
-        self.kg = load_kg(dataset_str)
-        self.embeds = load_embed(dataset_str,embed_name)
+        self.kg = load_kg(dataset_str,TMP_DIR)
+        self.embeds = load_embed(dataset_str,'PGPR',embed_name)
         for embedding in self.embeds:
             if isinstance(self.embeds[embedding], torch.Tensor):
                 self.embeds[embedding] = self.embeds[embedding].cpu()  # Move to CPU if it's a torch Tensor
 
         self.embed_size = self.embeds[USER].shape[1]
         self.embeds[SELF_LOOP] = (np.zeros(self.embed_size), 0.0)
-        #self.embeds[SELF_LOOP] = np.zeros(self.embed_size)
         self.state_gen = KGState(self.embed_size, history_len=state_history)
         self.state_dim = self.state_gen.dim
         self.dataset_name = dataset_str

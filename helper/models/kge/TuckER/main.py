@@ -15,10 +15,10 @@ from tqdm.autonotebook import tqdm
 from torchkge.sampling import BernoulliNegativeSampler
 from torchkge.utils import DataLoader
 from helper.models.traditional.log_helper import logging_config, create_log_id
-from helper.datasets.data_utils import get_set
+from helper.datasets.datasets_utils import get_set
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.models.kge.TuckER.parser_tucker import parse_args
-from helper.data_mappers.mapper_torchkge import get_watched_relation_idx
+from helper.data_mappers.mapper_kge import get_watched_relation_idx
 from helper.models.kge.TuckER.tucker import TuckER
 from torch.optim.lr_scheduler import ExponentialLR
 

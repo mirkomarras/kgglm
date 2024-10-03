@@ -1,7 +1,7 @@
 """
 TRAIN + EVALUATE
 """
-from helper.datasets.data_utils import get_set
+from helper.datasets.datasets_utils import get_set
 from helper.logging.log_helper import logging_config, create_log_id
 method_name="ConvE"
 import logging
@@ -17,7 +17,7 @@ from helper.utils import SEED
 from helper.models.model_utils import EarlyStopping, logging_metrics
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.models.kge.ConvE.parser_conve import parse_args
-from helper.data_mappers.mapper_torchkge import get_watched_relation_idx
+from helper.data_mappers.mapper_kge import get_watched_relation_idx
 from helper.models.kge.ConvE.conve import ConvE
 
 """Utils"""

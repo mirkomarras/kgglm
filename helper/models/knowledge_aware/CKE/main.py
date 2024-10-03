@@ -8,7 +8,7 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from helper.datasets.data_utils import get_user_negatives
+from helper.datasets.datasets_utils import get_user_negatives
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.logging.log_helper import create_log_id, logging_config
 from helper.models.knowledge_aware.CKE.CKE import CKE

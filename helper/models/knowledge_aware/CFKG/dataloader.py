@@ -3,7 +3,7 @@ import collections
 import numpy as np
 import pandas as pd
 
-from helper.datasets.dataloader_base_nfm import DataLoaderBase
+from helper.datasets.dataloader_base import DataLoaderBase
 
 
 class DataLoaderCFKG(DataLoaderBase):

@@ -6,11 +6,11 @@ import os
 import pandas as pd
 import random
 
-from helper.datasets.data_utils import get_set
+from helper.datasets.datasets_utils import get_set
 from helper.knowledge_graphs.kg_macros import USER, ENTITY, PRODUCT, INTERACTION
 from helper.knowledge_graphs.kg_utils import MAIN_PRODUCT_INTERACTION, KG_RELATION
 
-from helper.datasets.kg_dataset_base import KARSDataset
+from helper.datasets.KARSDataset import KARSDataset
 from .constants import LiteralPath
 
 

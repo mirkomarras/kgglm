@@ -1,21 +1,26 @@
 import copy
 import json
 import warnings
-
+import random
 import torch
-
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore", category=DeprecationWarning)
-warnings.filterwarnings("ignore", category=DeprecationWarning)       
-
+from collections import defaultdict
+import numpy as np
+import logging
+import os
+from os import makedirs
 import torch.optim as optim
-
-from helper.knowledge_graphs.kg_utils import USER
+from helper.utils import SEED
+from helper.knowledge_graphs.kg_macros import USER
 from helper.models.rl.PGPR.actor_critic import ACDataLoader, ActorCritic
 from helper.models.rl.PGPR.kg_env import BatchKGEnvironment
 from helper.models.rl.PGPR.parser import parser_pgpr_train
-from helper.models.rl.PGPR.pgpr_utils import *
+from helper.models.rl.PGPR.pgpr_utils import TMP_DIR,HPARAMS_FILE
 from helper.utils import get_weight_ckpt_dir, get_weight_dir
+from helper.logging.log_helper import get_logger
+
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 logger = None
 
@@ -150,7 +155,12 @@ def main():
     logger = get_logger(args.log_dir + '/train_log.txt')
     logger.info(args)
 
-    set_random_seed(args.seed)
+    random.seed(SEED)
+    np.random.seed(SEED)
+    torch.manual_seed(SEED)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(SEED)
+
     train(args)
 
 if __name__ == '__main__':

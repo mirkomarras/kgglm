@@ -89,7 +89,6 @@ def main():
     parser.add_argument('--train_size', type=float, default=0.6, help='size of the train set expressed in 0.x')
     parser.add_argument('--valid_size', type=float, default=0.2, help='size of the valid set expressed in 0.x')
     args = parser.parse_args()
-
     MapperKGAT(args)
 
 if __name__ == '__main__':

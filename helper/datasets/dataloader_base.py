@@ -1,13 +1,12 @@
 import os
-
 import random
 
-import torch
 import numpy as np
 import pandas as pd
+import torch
+
 
 class DataLoaderBase(object):
-
     def __init__(self, args, logging):
         self.args = args
         self.data_name = args.dataset

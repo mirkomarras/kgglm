@@ -5,7 +5,7 @@ from collections import defaultdict
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from helper.datasets.kg_dataset_base import KARSDataset
+from helper.datasets.KARSDataset import KARSDataset
 from helper.knowledge_graphs._kg_utils import (KG_RELATION,
                                                MAIN_PRODUCT_INTERACTION)
 from helper.knowledge_graphs.kg_macros import ENTITY, PRODUCT, USER

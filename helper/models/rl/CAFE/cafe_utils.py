@@ -3,9 +3,7 @@ import pickle
 import numpy as np
 import gzip
 
-from helper.knowledge_graphs.kg_macros import ML1M, LFM1M
-
-ROOT_DIR = os.environ['DATA_ROOT'] if 'DATA_ROOT' in os.environ else '.'
+from helper.knowledge_graphs.kg_macros import ML1M, LFM1M,ROOT_DIR
 
 CAFE='cafe'
 MODEL=CAFE
@@ -18,9 +16,7 @@ DATA_DIR = {
 OPTIM_HPARAMS_METRIC = 'avg_valid_loss'
 VALID_METRICS_FILE_NAME = 'valid_metrics.json'
 
-
 LOG_DIR = f'{ROOT_DIR}/results'
-
 
 LOG_DATASET_DIR = {
     ML1M: f'{LOG_DIR}/{ML1M}/{MODEL}',
@@ -88,10 +84,6 @@ def load_kg(dataset):
     kg = pickle.load(open(kg_file, 'rb'))
     return kg
 
-def save_kg(dataset, kg):
-    kg_file = TMP_DIR[dataset] + '/kg.pkl'
-    pickle.dump(kg, open(kg_file, 'wb'))
-    print(f'File is saved to "{os.path.abspath(kg_file)}".')
 
 def load_user_products(dataset, up_type='pos'):
     up_file = '{}/user_products_{}.npy'.format(TMP_DIR[dataset], up_type)
@@ -130,7 +122,3 @@ def load_path_count(dataset):
 def save_path_count(dataset, count):
     count_file = TMP_DIR[dataset] + '/path_count.pkl'
     pickle.dump(count, open(count_file, 'wb'))
-
-def makedirs(dataset_name):
-    os.makedirs(BEST_CFG_DIR[dataset_name], exist_ok=True)
-    os.makedirs(CFG_DIR[dataset_name], exist_ok=True)

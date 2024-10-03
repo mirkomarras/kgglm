@@ -1,7 +1,7 @@
 """
 TRAIN + EVALUATE
 """
-from helper.datasets.data_utils import get_set
+from helper.datasets.datasets_utils import get_set
 from helper.logging.log_helper import logging_config, create_log_id
 method_name="HolE"
 import logging
@@ -19,7 +19,7 @@ from helper.models.model_utils import EarlyStopping, logging_metrics
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.models.kge.HolE.hole import HolE
 from helper.models.kge.HolE.parser_hole import parse_args
-from helper.data_mappers.mapper_torchkge import get_watched_relation_idx
+from helper.data_mappers.mapper_kge import get_watched_relation_idx
 
 """Utils"""
 from helper.models.kge.utils import get_test_uids, get_log_dir,load_kg,get_users_positives,remap_topks2datasetid, get_users_positives_lp, get_set_lp,metrics_lp, build_kg_triplets

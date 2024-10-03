@@ -1,7 +1,6 @@
 import json
-from helper.knowledge_graphs.kg_macros import *
-
-ROOT_DIR = os.environ['DATA_ROOT'] if 'DATA_ROOT' in os.environ else '.'
+import os
+from helper.knowledge_graphs.kg_macros import ROOT_DIR, MAIN_PRODUCT_INTERACTION
 
 def get_KG_structures():
     with open(os.path.join(ROOT_DIR, 'helper/knowledge_graphs/config_files/kg_structure_config.json'), 'r') as f:
@@ -17,12 +16,6 @@ def get_KG_metapaths():
 KG_RELATION = get_KG_structures()
 PATH_PATTERN = get_KG_metapaths()
 
-MAIN_PRODUCT_INTERACTION = {
-    ML1M: (PRODUCT, INTERACTION[ML1M]),
-    LFM1M: (PRODUCT, INTERACTION[LFM1M])
-}
-
-# Utilities for PGPR
 
 def get_entities(dataset_name):
     return list(KG_RELATION[dataset_name].keys())

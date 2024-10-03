@@ -1,4 +1,4 @@
-from helper.datasets.dataloader_base_nfm import DataLoaderBase
+from helper.datasets.dataloader_base import DataLoaderBase
 
 
 class DataLoaderBPRMF(DataLoaderBase):

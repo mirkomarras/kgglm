@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import numpy as np
-from helper.data_mappers.mapper_torchkge import dataset_preprocessing
+from helper.data_mappers.mapper_kge import dataset_preprocessing
 from torchkge import KnowledgeGraph
 import torch
 from helper.evaluation.eval_metrics import ndcg_at_k,mmr_at_k
