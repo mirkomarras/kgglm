@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# All the models must be run from the helper/ directory
-if [[ "$(pwd)" != "$(pwd)/helper" ]]; then
-  cd helper/
+# All the models must be run from the kgglm/ directory
+if [[ "$(pwd)" != "$(pwd)/kgglm" ]]; then
+  cd kgglm/
 fi
 
 
@@ -11,10 +11,10 @@ echo "[+] Deleting previous weights"
 models=("Analogy" "ComplEx" "ConvE" "DistMult" "HolE" "RESCAL" "RotatE" "TorusE" "TransD" "TransE" "TransH" "TransR" "TuckER")
 for model in ${models[@]}
 do
-  rm -rf helper/models/kge/$model/__pycache__
-  rm -rf helper/models/kge/$model/weight*
-  rm -rf helper/models/kge/$model/log
-  rm helper/models/kge/$model/results*
+  rm -rf kgglm/models/kge/$model/__pycache__
+  rm -rf kgglm/models/kge/$model/weight*
+  rm -rf kgglm/models/kge/$model/log
+  rm kgglm/models/kge/$model/results*
 done
 
 
@@ -48,7 +48,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### TransH ###
@@ -64,7 +64,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### TransD ###
@@ -80,7 +80,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### TransR ###
@@ -96,7 +96,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### TorusE ###
@@ -112,7 +112,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### RESCAL ###
@@ -128,7 +128,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### DistMult ###
@@ -144,7 +144,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ## ComplEX ###
@@ -159,7 +159,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 ## Analogy ###
 start=$(date +%s)
@@ -173,7 +173,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 ## ConvE ###
 start=$(date +%s)
@@ -187,7 +187,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 ### HolE ###
 start=$(date +%s)
@@ -202,7 +202,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### RotatE ###
@@ -217,7 +217,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ## TuckER ###
@@ -232,7 +232,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 #############################
 ##### lfm1m EXPERIMENTS #####
@@ -251,7 +251,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### TransH ###
@@ -267,7 +267,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### TransD ###
@@ -283,7 +283,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### TransR ###
@@ -299,7 +299,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### TorusE ###
@@ -315,7 +315,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### RESCAL ###
@@ -331,7 +331,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### DistMult ###
@@ -347,7 +347,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ## ComplEX ###
@@ -362,7 +362,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 ## Analogy ###
 start=$(date +%s)
@@ -376,7 +376,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 ## ConvE ###
 start=$(date +%s)
@@ -390,7 +390,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 ### HolE ###
 start=$(date +%s)
@@ -405,7 +405,7 @@ k="10"
 use_cuda="all"
 margin=1
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda --margin $margin > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ### RotatE ###
@@ -420,7 +420,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 
 ## TuckER ###
@@ -435,7 +435,7 @@ wd="0"
 k="10"
 use_cuda="all"
 echo -e "\n\n\t\t Model: $model | dataset: $dataset | Emb. Size: $emb_size| Batch Size: $batch_size | Learning Rate -> $lr \n\n"
-export CUDA_VISIBLE_DEVICES=$GPU && python helper/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > helper/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
+export CUDA_VISIBLE_DEVICES=$GPU && python kgglm/models/kge/$model/main.py --lp True --dataset $dataset --epoch 30 --embed_size $emb_size --batch_size $batch_size --weight_decay $wd --lr $lr --K $k --use_cuda $use_cuda > kgglm/models/kge/$model/results_linkprediction_$dataset.txt ; end=$(date +%s) ; runtime=$((end-start)) ; echo "Execution time $model $dataset: $((runtime / 3600)) hours $(((runtime / 60) % 60)) minutes $((runtime % 60)) seconds" >> elapsed_training.txt
 
 # Record the total time elapsed for the execution of the experiments
 total_time_end=$(date +%s)

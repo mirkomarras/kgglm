@@ -1,0 +1,198 @@
+{
+    "ml1m": {
+        "user": {
+            "watched": "product"
+        },
+        "actor": {
+            "starred_by_actor": "product"
+        },
+        "director": {
+            "directed_by_director": "product"
+        },
+        "product": {
+            "watched": "user",
+            "produced_by_prodcompany": "prodcompany",
+            "produced_by_producer": "producer",
+            "edited_by_editor": "editor",
+            "wrote_by_writter": "writter",
+            "cinematography_by_cinematographer": "cinematographer",
+            "belong_to_category": "category",
+            "directed_by_director": "director",
+            "starred_by_actor": "actor",
+            "composed_by_composer": "composer",
+            "produced_in_country": "country",
+            "related_to_wikipage": "wikipage"
+        },
+        "prodcompany": {
+            "produced_by_prodcompany": "product"
+        },
+        "composer": {
+            "composed_by_composer": "product"
+        },
+        "producer": {
+            "produced_by_producer": "product"
+        },
+        "writter": {
+            "wrote_by_writter": "product"
+        },
+        "editor": {
+            "edited_by_editor": "product"
+        },
+        "category": {
+            "belong_to_category": "product"
+        },
+        "cinematographer": {
+            "cinematography_by_cinematographer": "product"
+        },
+        "country": {
+            "produced_in_country": "product"
+        },
+        "wikipage": {
+            "related_to_wikipage": "product"
+        }
+    },
+    "lfm1m": {
+        "user": {
+            "listened": "product"
+        },
+        "artist": {
+            "featured_by_artist": "product"
+        },
+        "engineer": {
+            "mixed_by_engineer": "product"
+        },
+        "product": {
+            "listened": "user",
+            "produced_by_producer": "producer",
+            "featured_by_artist": "artist",
+            "mixed_by_engineer": "engineer",
+            "belong_to_genre": "genre"
+        },
+        "producer": {
+            "produced_by_producer": "product"
+        },
+        "genre": {
+            "belong_to_genre": "product"
+        }
+    },
+    "cellphones": {
+        "user": {
+            "purchase": "product"
+        },
+        "product": {
+            "purchase": "user",
+            "produced_by_prodcompany": "brand",
+            "belong_to_category": "category",
+            "also_bought_related_product": "rproduct",
+            "also_viewed_related_product": "rproduct",
+            "also_bought_product": "product",
+            "also_viewed_product": "product"
+        },
+        "brand": {
+            "produced_by_prodcompany": "product"
+        },
+        "category": {
+            "belong_to_category": "product"
+        },
+        "rproduct": {
+            "also_bought_related_product": "product",
+            "also_viewed_related_product": "product"
+        }
+    },
+    "coco": {
+        "user": {
+            "interacted": "product"
+        },
+        "concept": {
+            "related_to_concept": "product"
+        },
+        "level": {
+            "taught_in_level": "product"
+        },
+        "product": {
+            "interacted": "user",
+            "related_to_concept": "concept",
+            "taught_in_level": "level",
+            "taught_in_language": "language",
+            "has_target_audience": "audience",
+            "belong_to_category": "category"
+        },
+        "language": {
+            "taught_in_language": "product"
+        },
+        "category": {
+            "belong_to_category": "product"
+        },
+        "audience": {
+            "has_target_audience": "product"
+        }
+    },
+    "hummus": {
+        "user": {
+            "reviewed": "product"
+        },
+        "product": {
+            "reviewed": "user",
+            "has_ingredient": "ingredient",
+            "has_who_range_who": "who",
+            "has_fsa_range_fsa": "fsa",
+            "has_nutri_range_nutri": "nutri",
+            "has_protein_range_protein": "protein",
+            "has_calories_range_calories": "calories",
+            "has_calories_from_fat_range_caloriesFromFat": "caloriesFromFat",
+            "has_total_fat_range_totalFat": "totalFat",
+            "has_saturated_fat_range_saturatedFat": "saturatedFat",
+            "has_cholesterol_range_cholesterol": "cholesterol",
+            "has_sodium_range_sodium": "sodium",
+            "has_carbohydrate_range_carbohydrate": "carbohydrate",
+            "has_dietary_fiber_range_dietaryFiber": "dietaryFiber",
+            "has_sugars_range_sugars": "sugars",
+            "has_duration_range_duration": "duration"
+        },
+        "ingredient": {
+            "has_ingredient": "product"
+        },
+        "who": {
+            "has_who_range_who": "product"
+        },
+        "fsa": {
+            "has_fsa_range_fsa": "product"
+        },
+        "nutri": {
+            "has_nutri_range_nutri": "product"
+        },
+        "protein_range": {
+            "has_protein_range_protein": "product"
+        },
+        "calories": {
+            "has_calories_range_calories": "product"
+        },
+        "caloriesFromFat": {
+            "has_calories_from_fat_range_caloriesFromFat": "product"
+        },
+        "totalFat": {
+            "has_total_fat_range_totalFat": "product"
+        },
+        "saturatedFat": {
+            "has_saturated_fat_range_saturatedFat": "product"
+        },
+        "cholesterol": {
+            "has_cholesterol_range_cholesterol": "product"
+        },
+        "sodium": {
+            "has_sodium_range_sodium": "product"
+        },
+        "carbohydrate": {
+            "has_carbohydrate_range_carbohydrate": "product"
+        },
+        "dietaryFiber": {
+            "has_dietary_fiber_range_dietaryFiber": "product"
+        },
+        "sugars": {
+            "has_sugars_range_sugars": "product"
+        },
+        "duration": {
+            "has_duration_range_duration": "product"
+        }
+    }
+}
