@@ -22,10 +22,8 @@ representation methods for these steps differ, leading to inefficiencies, limite
 paper, we introduce KGGLM, a decoder-only Transformer model
 designed for generalizable knowledge representation learning to
 support recommendation. The model is trained on generic paths
-sampled from the knowledge graph to capture foundational pat-
-terns, and then fine-tuned on paths specific of the downstream step
-(knowledge completion and path reasoning in our case). Experi-
-ments on ML1M and LFM1M show that KGGLM beats twenty-two
+sampled from the knowledge graph to capture foundational patterns, and then fine-tuned on paths specific of the downstream step
+(knowledge completion and path reasoning in our case). Experiments on ML1M and LFM1M show that KGGLM beats twenty-two
 baselines in effectiveness under both knowledge completion and
 recommendation.*
 # Paper
