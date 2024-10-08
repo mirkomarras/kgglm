@@ -25,11 +25,15 @@ def get_weight_ckpt_dir(method_name: str,dataset: str):
     return weight_dir_ckpt
 
 def get_test_uids(dataset):
-    preprocessed_torchkge=f"data/{dataset}/preprocessed/torchkge"
-    test_path = f"{preprocessed_torchkge}/triplets_test.txt"
-    kg_df_test = pd.read_csv(test_path, sep="\t")
-    kg_df_test.rename(columns={"0":"from","1":"to","2":"rel"},inplace=True)
-    uids=np.unique(kg_df_test['from'])
+    if dataset in ['ml1m', 'lfm1m']:
+        preprocessed_torchkge=f"data/{dataset}/preprocessed/torchkge"
+        test_path = f"{preprocessed_torchkge}/triplets_test.txt"
+        kg_df_test = pd.read_csv(test_path, sep="\t")
+        kg_df_test.rename(columns={"0":"from","1":"to","2":"rel"},inplace=True)
+        uids=np.unique(kg_df_test['from'])
+    else:
+        kg_test_df=pd.read_csv(os.path.join('data',dataset,'recommendation','kg_test.txt'),sep=' ',header=None)
+        uids=np.unique(kg_test_df.to_numpy()[:,0])
     return uids
 
 def get_log_dir(method_name: str):
@@ -38,32 +42,50 @@ def get_log_dir(method_name: str):
         os.makedirs(log_dir)
     return log_dir
 
-def load_kg(dataset): 
-    preprocessed_torchkge=f"data/{dataset}/preprocessed/torchkge"
-    dataset_preprocessing(dataset)
-    e_df_withUsers=pd.read_csv(f"{preprocessed_torchkge}/e_map_with_users.txt", sep="\t")
-    kg_df = pd.read_csv(f"{preprocessed_torchkge}/kg_final_updated.txt", sep="\t")
-    kg_df.rename(columns={"entity_head":"from","entity_tail":"to","relation":"rel"},inplace=True)
-    kg_train=KnowledgeGraph(df=kg_df,ent2ix=dict(zip(e_df_withUsers['eid'],e_df_withUsers['eid'])))
+def load_kg(dataset):
+    if dataset in ['ml1m','lfm1m']:
+        preprocessed_torchkge=f"data/{dataset}/preprocessed/torchkge"
+        dataset_preprocessing(dataset)
+        e_df_withUsers=pd.read_csv(f"{preprocessed_torchkge}/e_map_with_users.txt", sep="\t")
+        kg_df = pd.read_csv(f"{preprocessed_torchkge}/kg_final_updated.txt", sep="\t")
+        kg_df.rename(columns={"entity_head":"from","entity_tail":"to","relation":"rel"},inplace=True)
+        kg_train=KnowledgeGraph(df=kg_df,ent2ix=dict(zip(e_df_withUsers['eid'],e_df_withUsers['eid'])))
+    else:
+        # remember that we created a mapping for items that goes from 0 to num_items+1, and for users from num_items+1 to (num_items+1)+num_users!
+        # so we'll take the last element in users_mapping because it say the total number of entity.
+        kg_train=pd.read_csv(os.path.join('data',dataset,'recommendation','kg_train.txt'),sep=' ',names=['from','rel','to'])
+        kg_train=kg_train[['from','to','rel']] #change the columns order
+        user_mapping_df = pd.read_csv(os.path.join('data',dataset, 'mappings', 'user_mapping.txt'), sep=' ', header=None)
+        total_num_entities=int(user_mapping_df.iloc[-1,1])+1
+        kg_train=KnowledgeGraph(df=kg_train,ent2ix=dict(zip(list(range(total_num_entities)),list(range(total_num_entities)))))
     return kg_train
 
 def get_preprocessed_torchkge_path(dataset):
     preprocessed_torchkge=f"data/{dataset}/preprocessed/torchkge"
     return preprocessed_torchkge
 
-def get_users_positives(path): 
-    users_positives=dict()
-    with open(f"{path}/triplets_train_valid.txt","r") as f:
+def get_users_positives(dataset,task='recommendation'):  # riscrivere
+    assert task in ['recommendation','linkPrediction'], '[Error] please specify recommendation or linkPrediction'
+    
+    users_positives=defaultdict(list)
+    if dataset in ['ml1m','lfm1m']:
+        kg_train= os.path.join('data',dataset,'preprocessed','torchkge','triplets_train_valid.txt')
+    else:
+        # head (uid), rel (watched), tail (pid)
+        kg_train=os.path.join('data',dataset,task,'kg_train.txt')
+
+    with open(kg_train,"r") as f:
         for i,row in enumerate(f):
-            if i==0:
+            if i==0 and dataset in ['ml1m','lfm1m']:
                 continue
-            uid,pid,_=row.split("\t")
+            if dataset in ['ml1m','lfm1m']:
+                uid,pid,_=row.split("\t")
+            else:
+                uid, _, pid = row.split(' ')
             uid=int(uid)
             pid=int(pid)
             if uid in users_positives:
                 users_positives[uid].append(pid)
-            else:
-                users_positives[uid]=[pid]
     return users_positives
  
 def remap_topks2datasetid(args,topks):
@@ -80,17 +102,18 @@ def remap_topks2datasetid(args,topks):
     
     return topks
 
-
-
 """Link prediction Utilities"""
 
 def get_set_lp(dataset,split):
     if dataset == 'ml1m' or dataset == 'lfm1m':
         path = os.path.join('data', dataset, 'preprocessed', f'kg_{split}.txt')
+        df = pd.read_csv(path, sep='\t')
     else:
-        path = os.path.join('data', dataset, f'kg_{split}.txt')
-
-    df=pd.read_csv(path,sep="\t")
+        path = os.path.join('data', dataset, 'linkPrediction',f'kg_{split}.txt')
+        try:
+            df=pd.read_csv(path,sep='\t')
+        except:
+            df = pd.read_csv(path, sep=' ')
     test_data=df.to_numpy()
     curr_set=defaultdict(list)
     for triplet in test_data:
@@ -100,15 +123,35 @@ def get_set_lp(dataset,split):
         curr_set[(triplet[0],triplet[1])].append(triplet[2])
     return curr_set
 
+
+def load_kg_lp(dataset, split):
+    if dataset == 'ml1m' or dataset == 'lfm1m':
+        path = os.path.join('data', dataset, 'preprocessed', f'kg_{split}.txt')
+        e_df = pd.read_csv(os.path.join('data', dataset, 'preprocessed', 'e_map.txt'), sep="\t")
+        kg_df = pd.read_csv(path, sep="\t")
+        kg_df.rename(columns={"entity_head": "from", "entity_tail": "to", "relation": "rel"}, inplace=True)
+        return KnowledgeGraph(df=kg_df, ent2ix=dict(zip(e_df['eid'],e_df['eid'])))
+    else:
+        try:
+            kg_df=pd.read_csv(os.path.join('data',dataset,'linkPrediction',f'kg_{split}.txt'),sep='\t',names=['from','rel','to'])
+        except:
+            kg_df = pd.read_csv(os.path.join('data', dataset, 'linkPrediction', f'kg_{split}.txt'), sep=' ',names=['from', 'rel', 'to'])
+        # our datasets doesn't have some type of entity file or similar. why? because is a rec dataset not an lp ones.
+        kg_df_train = pd.read_csv(os.path.join('data',dataset,'linkPrediction',f'kg_train.txt'), sep="\t").to_numpy()
+        kg_df_test = pd.read_csv(os.path.join('data',dataset,'linkPrediction',f'kg_test.txt'), sep="\t").to_numpy()
+        num_entities=np.unique(np.concatenate([kg_df_train[:, 0], kg_df_train[:, 2], kg_df_test[:, 0], kg_df_test[:, 2]]))
+        return KnowledgeGraph(df=kg_df, ent2ix=dict(zip(list(range(len(num_entities))),list(range(len(num_entities))))))
+
+
 def get_users_positives_lp(dataset):
     users_positives=defaultdict(list)
-    if dataset=='ml1m' or dataset=='lfm1m':
+    if dataset in ['ml1m','lfm1m']:
         path=os.path.join('data',dataset,'preprocessed',f'kg_train.txt') # it contains train + valid as rec task
     else:
-        path=os.path.join('data',dataset,f'kg_train.txt')
+        path=os.path.join('data',dataset,'linkPrediction', 'kg_train.txt')
     with open(path,"r") as f:
         for i,row in enumerate(f):
-            if i==0:
+            if i==0 and dataset in ['ml1m','lfm1m']:
                 continue
             e1,r,e2 =row.split("\t")
             e1 = int(e1)
@@ -116,6 +159,7 @@ def get_users_positives_lp(dataset):
             r  = int(r)
             if e2 not in users_positives[(e1,r)]:
                 users_positives[(e1,r)].append(e2)
+            print(i)
     return users_positives
 
 def build_kg_triplets(dataset):

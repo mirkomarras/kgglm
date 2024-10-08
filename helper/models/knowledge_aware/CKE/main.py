@@ -29,7 +29,6 @@ def initialize_model(args, dataset_obj):
     return model
 
 
-
 def train_epoch(model, data_generator, epoch, args):
     total_loss, total_base_loss, total_kge_loss, total_reg_loss = 0.0, 0.0, 0.0, 0.0
     n_batch = data_generator.n_train // args.batch_size + 1
@@ -101,7 +100,6 @@ def train(args):
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     args.device = device
-    #train_cores = multiprocessing.cpu_count()
 
     dataset_obj = CKELoader(args=args, path=os.path.join(get_data_dir(args.dataset),'kgat'))
     model = initialize_model(args, dataset_obj)

@@ -3,7 +3,7 @@ from tqdm import tqdm
 
 from helper.knowledge_graphs.kg_macros import (ENTITY_LIST, INTERACTION,
                                                PRODUCT, RELATION_LIST, USER)
-from helper.knowledge_graphs.kg_cafe import CAFEKnowledgeGraph
+from helper.knowledge_graphs.cafe_kg import CAFEKnowledgeGraph
 from helper.models.rl.CAFE.cafe_utils import (load_kg, load_labels, save_embed,
                                               save_kg, save_path_count,
                                               save_user_products)

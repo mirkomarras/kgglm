@@ -9,7 +9,7 @@ import torch
 import torch.optim as optim
 
 from helper.models.rl.CAFE.parser import parse_args
-from helper.models.rl.PGPR.pgpr_utils import load_embed
+from helper.datasets.datasets_utils import load_embed
 from helper.logging.log_helper import create_log_id, logging_config
 from helper.models.rl.CAFE.data_utils import OnlinePathLoader
 from helper.models.rl.CAFE.symbolic_model import create_symbolic_model
@@ -50,7 +50,7 @@ def train(args):
     dataloader = OnlinePathLoader(args.dataset, args.batch_size, topk=args.topk_candidates)
     metapaths = dataloader.kg.metapaths
 
-    kg_embeds = load_embed(args.dataset, 'TransE') if train else None
+    kg_embeds = load_embed(args.dataset, 'CAFE','TransE') if train else None
     model = create_symbolic_model(args, dataloader.kg, train=True, pretrain_embeds=kg_embeds)
     params = [name for name, param in model.named_parameters() if param.requires_grad]
     logging.info(f'Trainable parameters: {params}')

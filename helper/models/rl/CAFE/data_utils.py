@@ -3,7 +3,8 @@ import random
 
 import numpy as np
 
-from helper.knowledge_graphs.kg_utils import KG_RELATION, PRODUCT, USER
+from helper.knowledge_graphs.kg_macros import PRODUCT, USER
+from helper.knowledge_graphs.kg_utils import KG_RELATION
 from helper.models.rl.CAFE.cafe_utils import load_kg, load_user_products
 
 

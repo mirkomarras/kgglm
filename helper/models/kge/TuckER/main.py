@@ -2,19 +2,18 @@
 TRAIN + EVALUATE
 """
 from helper.utils import SEED
-from helper.logging.log_helper import logging_config, create_log_id
 method_name="TuckER"
 import logging
 import torch
 import numpy as np
-import pandas as pd
 import os
 from time import time
 import random
 from tqdm.autonotebook import tqdm
 from torchkge.sampling import BernoulliNegativeSampler
 from torchkge.utils import DataLoader
-from helper.models.traditional.log_helper import logging_config, create_log_id
+from helper.models.model_utils import EarlyStopping, logging_metrics
+from helper.logging.log_helper import logging_config, create_log_id
 from helper.datasets.datasets_utils import get_set
 from helper.evaluation.eval_metrics import evaluate_rec_quality
 from helper.models.kge.TuckER.parser_tucker import parse_args
@@ -23,7 +22,7 @@ from helper.models.kge.TuckER.tucker import TuckER
 from torch.optim.lr_scheduler import ExponentialLR
 
 """Utils"""
-from helper.models.kge.utils import get_test_uids, get_log_dir,load_kg,get_users_positives,remap_topks2datasetid, get_users_positives_lp, get_set_lp, get_set_entities,metrics_lp, build_kg_triplets
+from helper.models.kge.utils import get_test_uids, get_log_dir,load_kg,get_users_positives,remap_topks2datasetid, load_kg_lp,get_users_positives_lp, get_set_lp, get_set_entities,metrics_lp, build_kg_triplets
 
 
 def initialize_model(kg_train,b_size,emb_dim,weight_decay,lr,use_cuda,args):
@@ -105,7 +104,7 @@ def evaluate_model(model,args):
         _,avg_rec_quality_metrics=evaluate_rec_quality(args.dataset, top_k_recommendations, test_labels, args.K,method_name=method_name)
         return avg_rec_quality_metrics,top_k_recommendations
     else:
-        kg_train = get_set_lp(args.dataset,'train')
+        kg_train = load_kg_lp(args.dataset, 'train')
         users_positives = get_users_positives_lp(args.dataset)
         test_labels = get_set_lp(args.dataset,'test')
         """Generating Top k"""
@@ -156,9 +155,8 @@ def train(args):
     if not args.lp:
         kg_train = load_kg(args.dataset)
     else:
-        # lp datasets should have: 'entities.dict', 'relations.dict', 'train.txt', 'valid.txt', 'test.txt'
         build_kg_triplets(args.dataset)
-        kg_train = get_set_lp(args.dataset, 'train')
+        kg_train = load_kg_lp(args.dataset, 'train')
     model,optimizer,scheduler,sampler, dataloader=initialize_model(kg_train,args.batch_size,args.embed_size,args.weight_decay,args.lr,args.use_cuda,args)
 
     

@@ -33,8 +33,7 @@ def parser_pgpr_train():
                         default=True, help='Whether to perform validation')
     args = parser.parse_args()
 
-    args.device = torch.device(
-        'cuda:0') if torch.cuda.is_available() else 'cpu'
+    args.device = torch.device('cuda:0') if torch.cuda.is_available() else 'cpu'
     
     return args
 
