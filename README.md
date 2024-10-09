@@ -65,7 +65,7 @@ To run:
 ```
 ### Training
 > [!TIP]
-> *Take account that weights are already available in the link above.*
+> Take account that weights are already available in the link above.
 
 **KGE Baselines on Recommendation**
 
@@ -85,7 +85,7 @@ python helper/models/<knowledge_aware|traditional>/<model>/main.py --dataset <da
 **PGPR**
 
 > [!IMPORTANT]
-> *It is mandatory to train TransE on the relevant dataset first.*
+> It is mandatory to train TransE on the relevant dataset first.
 
 ```bash
 python preprocess.py --dataset ml1m
@@ -98,7 +98,7 @@ python test_agents.py —-dataset lfm1m —-hidden [hiddenSize taken after grids
 **CAFE**
 
 > [!IMPORTANT]
-> *It is mandatory to train TransE on the relevant dataset first and then execute `preprocess_embeddings.py` inside the PGPR folder as above*.
+> It is mandatory to train TransE on the relevant dataset first and then execute `preprocess_embeddings.py` inside the PGPR folder as above.
 
 
 ```bash
@@ -134,7 +134,7 @@ CUDA_DEVICE=0 && ./run_kge_evaluation_linkprediction.sh CUDA_DEVICE
 # Data
 
 > [!TIP]  
-> *The data is already available in the repository, while the paths can be downloaded from the previous link. The paths_random_walk folder must be placed in the folder of the corresponding dataset (e.g. data/lfm1m/paths_random_walk)*.
+> The data is already available in the repository, while the paths can be downloaded from the previous link. The paths_random_walk folder must be placed in the folder of the corresponding dataset (e.g. data/lfm1m/paths_random_walk).
 
 
 ### Datasets info
