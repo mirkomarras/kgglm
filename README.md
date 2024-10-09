@@ -1,7 +1,8 @@
 <div align="center">
 
-<!-- [![arXiv](https://img.shields.io/badge/arXiv-<id>-b31b1b.svg)](https://arxiv.org/abs/<id>) -->
+[![Paper](https://img.shields.io/badge/arXiv-<id>-b31b1b.svg)](https://doi.org/10.1145/3640457.3691703)
 [![Python](https://img.shields.io/badge/Python-3.9.19-<COLOR>.svg)](https://shields.io/)
+[![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 [![Torch](https://img.shields.io/badge/Torch-2.0.0-red.svg)](https://shields.io/)
 ![nvidia-rtxa6000](https://img.shields.io/badge/NVIDIA-RTXA6000-76B900.svg?logo=Nvidia&logoColor=white)
 
@@ -27,10 +28,12 @@ sampled from the knowledge graph to capture foundational patterns, and then fine
 baselines in effectiveness under both knowledge completion and
 recommendation.*
 # Paper
-Paper under publication.
+ACM DL [[**KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation**](https://doi.org/10.1145/3640457.3691703)]
 
 # Setup
-It is possible to download weights and sampled paths here: [[**Link**](https://shorturl.at/EIZ8T)]
+
+> [!TIP]
+> It is possible to download weights and sampled paths here: [[**Link**](https://shorturl.at/EIZ8T)]
 
 ### Steps
 
@@ -46,7 +49,8 @@ pip install -r requirements.txt
 pip install . # from root folder
 ```
 ### Data Mapper
-It is mandatory to first run the mapper corresponding to the model in the `helper/data_mappers` folder.
+> [!IMPORTANT]  
+> It is mandatory to first run the mapper corresponding to the model in the `helper/data_mappers` folder.
 
 To run:
 - NFM, FM, BPRMF, KGAT, CKE, CFKG: `python mapper_kgat.py --dataset <dataset>`
@@ -60,7 +64,8 @@ To run:
 ./build_datasets_lp.sh # to finetune for knowledge completion
 ```
 ### Training
-*Take account that weights are already available in the link above.*
+> [!TIP]
+> *Take account that weights are already available in the link above.*
 
 **KGE Baselines on Recommendation**
 
@@ -79,8 +84,9 @@ python helper/models/<knowledge_aware|traditional>/<model>/main.py --dataset <da
 ```
 **PGPR**
 
+> [!IMPORTANT]
+> *It is mandatory to train TransE on the relevant dataset first.*
 
-*It is mandatory to train TransE on the relevant dataset first.*
 ```bash
 python preprocess.py --dataset ml1m
 python preprocess_embeddings.py —-dataset lfm1m —-name TransE
@@ -91,8 +97,10 @@ python test_agents.py —-dataset lfm1m —-hidden [hiddenSize taken after grids
 
 **CAFE**
 
+> [!IMPORTANT]
+> *It is mandatory to train TransE on the relevant dataset first and then execute `preprocess_embeddings.py` inside the PGPR folder as above*.
 
-*It is mandatory to train TransE on the relevant dataset first and then execute `preprocess_embeddings.py` inside the PGPR folder as above*.
+
 ```bash
 python preprocess_embeddings.py —-dataset ml1m —name TransE
 python preprocess.py --dataset ml1m
@@ -124,7 +132,9 @@ CUDA_DEVICE=0 && ./run_kge_evaluation_linkprediction.sh CUDA_DEVICE
 ```
 
 # Data
-*The data is already available in the repository, while the paths can be downloaded from the previous link. The paths_random_walk folder must be placed in the folder of the corresponding dataset (e.g. data/lfm1m/paths_random_walk)*.
+
+> [!TIP]  
+> *The data is already available in the repository, while the paths can be downloaded from the previous link. The paths_random_walk folder must be placed in the folder of the corresponding dataset (e.g. data/lfm1m/paths_random_walk)*.
 
 
 ### Datasets info
@@ -254,12 +264,18 @@ Please feel free to file issues and pull requests on the repo and we will addres
 # Citation
 If you want to use our codes in your research, please cite:
 ```
-@inproceedings{kgglm2024,
-  Author = {Balloccu Giacomo, Boratto Ludovico, Gianni Fenu, Mirko Marras, Alessandro Soccol},
-  Booktitle = {18th ACM Conference on Recommender Systems (RecSys '24)},
-  Organization = {ACM},
-  Title = {KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation},
-  Year = {2024}
+@inproceedings{10.1145/3640457.3691703,
+  author    = {Balloccu, Giacomo and Boratto, Ludovico and Fenu, Gianni and Marras, Mirko and Soccol, Alessandro},
+  title     = {KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation},
+  year      = {2024},
+  publisher = {Association for Computing Machinery},
+  url       = {https://doi.org/10.1145/3640457.3691703},
+  doi       = {10.1145/3640457.3691703},
+  booktitle = {Proceedings of the 18th ACM Conference on Recommender Systems},
+  pages     = {1079–1084},
+  numpages  = {6},
+  location  = {Bari, Italy},
+  series    = {RecSys '24}
 }
 ```
 
