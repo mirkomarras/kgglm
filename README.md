@@ -1,6 +1,6 @@
 <div align="center">
 
-[![Paper](https://img.shields.io/badge/arXiv-<id>-b31b1b.svg)](https://doi.org/10.1145/3640457.3691703)
+[![DOI:10.1145/3640457.3691703](https://zenodo.org/badge/DOI/10.1145/3640457.3691703.svg)](https://doi.org/10.1145/3640457.3691703)
 [![Python](https://img.shields.io/badge/Python-3.9.19-<COLOR>.svg)](https://shields.io/)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 [![Torch](https://img.shields.io/badge/Torch-2.0.0-red.svg)](https://shields.io/)
@@ -28,7 +28,7 @@ sampled from the knowledge graph to capture foundational patterns, and then fine
 baselines in effectiveness under both knowledge completion and
 recommendation.*
 # Paper
-ACM DL [[**KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation**](https://doi.org/10.1145/3640457.3691703)]
+ACM DL [**KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation**](https://doi.org/10.1145/3640457.3691703)
 
 # Setup
 
