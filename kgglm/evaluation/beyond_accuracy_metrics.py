@@ -21,6 +21,7 @@ def coverage(recommended_items: Set[int], n_items_in_catalog: int) -> float:
     """
     return len(recommended_items) / n_items_in_catalog
 
+
 def serendipity_at_k(user_topk: List[int], most_pop_topk: List[int], k: int) -> float:
     """
     Paper: https://dl.acm.org/doi/pdf/10.1145/2926720
@@ -41,6 +42,7 @@ def diversity_at_k(topk_items: List[int], pid2genre: Dict[int, str]):
     diversity_items_tok = set([pid2genre[pid] for pid in topk_items])  # set of genres
     return len(diversity_items_tok) / len(topk_items)
 
+
 def novelty_at_k(topk_items: List[int], pid2popularity: Dict[int, float]):
     """
     Paper:
@@ -49,44 +51,61 @@ def novelty_at_k(topk_items: List[int], pid2popularity: Dict[int, float]):
     novelty_items_topk = [1 - pid2popularity[pid] for pid in topk_items]
     return np.mean(novelty_items_topk)
 
+
 def get_item_genre(dataset_name: str) -> Union[None, Dict[int, str]]:
     """
     Returns a dictionary of item_id -> genre
     Note that the ids are the entity ids to be in the same space of the models.
     """
-    data_dir = os.path.join('data', dataset_name, 'preprocessed')
+    data_dir = os.path.join("data", dataset_name, "preprocessed")
     dataset_id2model_kg_id: Dict[str, str] = get_dataset_id2eid(dataset_name, "product")
 
     item_genre_df = pd.read_csv(os.path.join(data_dir, "products.txt"), sep="\t")
-    if 'genre' not in item_genre_df.columns:
+    if "genre" not in item_genre_df.columns:
         return None
 
-    item_genre_df['pid'] = item_genre_df['pid'].astype(str).map(dataset_id2model_kg_id) # Ensure 'pid' column is of type int before mapping
-    item_genre_df.dropna(subset=['pid'], inplace=True) # Drop rows where 'pid' is NaN, since the KG dataset a slightly less product
+    item_genre_df["pid"] = (
+        item_genre_df["pid"].astype(str).map(dataset_id2model_kg_id)
+    )  # Ensure 'pid' column is of type int before mapping
+    item_genre_df.dropna(
+        subset=["pid"], inplace=True
+    )  # Drop rows where 'pid' is NaN, since the KG dataset a slightly less product
 
-    return {int(pid): genre for pid, genre in zip(item_genre_df['pid'], item_genre_df['genre'])}
+    return {
+        int(pid): genre
+        for pid, genre in zip(item_genre_df["pid"], item_genre_df["genre"])
+    }
+
 
 def get_item_count(dataset_name: str) -> int:
     """
     Returns the number of items in the dataset
     """
-    data_dir = os.path.join('data', dataset_name, 'preprocessed')
+    data_dir = os.path.join("data", dataset_name, "preprocessed")
     df_items = pd.read_csv(os.path.join(data_dir, "products.txt"), sep="\t")
     return df_items.pid.unique().shape[0]
+
 
 def get_item_pop(dataset_name: str) -> Union[None, Dict[int, float]]:
     """
     Returns a dictionary of item_id -> popularity score (0-1 normalised)
     Note that the ids are the entity ids to be in the same space of the models.
     """
-    data_dir = os.path.join('data', dataset_name, 'preprocessed')
+    data_dir = os.path.join("data", dataset_name, "preprocessed")
     dataset_id2model_kg_id: Dict[str, str] = get_dataset_id2eid(dataset_name, "product")
 
     df_items = pd.read_csv(os.path.join(data_dir, "products.txt"), sep="\t")
-    if 'pop_item' not in df_items.columns:
+    if "pop_item" not in df_items.columns:
         return None
 
-    df_items['pid'] = df_items['pid'].astype(str).map(dataset_id2model_kg_id) # Ensure 'pid' column is of type str before mapping
-    df_items.dropna(subset=['pid'], inplace=True) # Drop rows where 'pid' is NaN, since the KG dataset a slightly less product
+    df_items["pid"] = (
+        df_items["pid"].astype(str).map(dataset_id2model_kg_id)
+    )  # Ensure 'pid' column is of type str before mapping
+    df_items.dropna(
+        subset=["pid"], inplace=True
+    )  # Drop rows where 'pid' is NaN, since the KG dataset a slightly less product
 
-    return {int(pid): float(pop_item) for pid, pop_item in zip(df_items['pid'], df_items['pop_item'])}
+    return {
+        int(pid): float(pop_item)
+        for pid, pop_item in zip(df_items["pid"], df_items["pop_item"])
+    }

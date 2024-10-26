@@ -5,41 +5,69 @@ from collections import defaultdict
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from kgglm.datasets.KARSDataset import KARSDataset
-from kgglm.knowledge_graphs.kg_utils import (KG_RELATION,
-                                              MAIN_PRODUCT_INTERACTION)
-from kgglm.knowledge_graphs.kg_macros import ENTITY, PRODUCT, USER
+
+from kgglm.data.dataset.KARSDataset import KARSDataset
+from kgglm.data.knowledge_graph.kg_macros import ENTITY, PRODUCT, USER
+from kgglm.data.knowledge_graph.kg_utils import KG_RELATION, MAIN_PRODUCT_INTERACTION
 from kgglm.utils import get_data_dir
 
 from .constants import LiteralPath
 
 
-def random_walk_typified(head, dataset_name, kg, items, n_hop, KG2T, R2T, USER_ENT, PROD_ENT, EXT_ENT, U2P_REL, logdir,
-                         ignore_rels=set(), max_paths=None, itemset_type='inner', REL_TYPE2ID=None,
-                         collaborative=True,
-                         num_beams=10, scorer=None,
-                         dataset_info=None,
-                         with_type=True,
-                         start_ent_type=ENTITY,
-                         end_ent_type=PRODUCT):
+def random_walk_typified(
+    head,
+    dataset_name,
+    kg,
+    items,
+    n_hop,
+    KG2T,
+    R2T,
+    USER_ENT,
+    PROD_ENT,
+    EXT_ENT,
+    U2P_REL,
+    logdir,
+    ignore_rels=set(),
+    max_paths=None,
+    itemset_type="inner",
+    REL_TYPE2ID=None,
+    collaborative=True,
+    num_beams=10,
+    scorer=None,
+    dataset_info=None,
+    with_type=True,
+    start_ent_type=ENTITY,
+    end_ent_type=PRODUCT,
+):
     dirpath = logdir
     os.makedirs(dirpath, exist_ok=True)
 
     REL_TYPE2ID[U2P_REL] = LiteralPath.interaction_rel_id
     unique_path_set = set()
 
-    def dfs(head, prev_ent_t, cur_ent_t, prev_ent_id, cur_ent_id, cur_hop, path, prev_rel, n_hop, start_ent_type,
-            end_ent_type,
-            cur_attempts,
-            max_attempts=8000):  # orig is 2k
+    def dfs(
+        head,
+        prev_ent_t,
+        cur_ent_t,
+        prev_ent_id,
+        cur_ent_id,
+        cur_hop,
+        path,
+        prev_rel,
+        n_hop,
+        start_ent_type,
+        end_ent_type,
+        cur_attempts,
+        max_attempts=8000,
+    ):  # orig is 2k
         if cur_hop >= n_hop:
             path = [str(x) for x in path]
-            path_str = ' '.join(path)
+            path_str = " ".join(path)
             if path_str in unique_path_set:
                 return False
             else:
                 unique_path_set.add(path_str)
-            fp.write(path_str + '\n')
+            fp.write(path_str + "\n")
             return True
         if cur_ent_id not in kg[cur_ent_t]:
             return False
@@ -56,15 +84,14 @@ def random_walk_typified(head, dataset_name, kg, items, n_hop, KG2T, R2T, USER_E
                     continue
                 candidates = kg[cur_ent_t][cur_ent_id][rel][cand_type]
 
-                if cur_hop == n_hop - 1:
-                    cache_key = (head, rel, cand_type)
+                # if cur_hop == n_hop - 1:
+                # cache_key = (head, rel, cand_type)
 
-                    ent_t = None
-                    if cur_ent_t == USER_ENT:
-                        ent_t = USER_ENT
-                    else:
-                        ent_t = EXT_ENT
-                    key = head, rel_id, ent_t, cur_ent_id
+                # if cur_ent_t == USER_ENT:
+                #     ent_t = USER_ENT
+                # else:
+                #     ent_t = EXT_ENT
+                # key = head, rel_id, ent_t, cur_ent_id
 
                 if len(candidates) == 0:
                     continue
@@ -73,7 +100,7 @@ def random_walk_typified(head, dataset_name, kg, items, n_hop, KG2T, R2T, USER_E
                         path.append(LiteralPath.back_rel)
                     else:
                         path.append(LiteralPath.fw_rel)
-                path.append(f'{LiteralPath.rel_type}{rel_id}')
+                path.append(f"{LiteralPath.rel_type}{rel_id}")
                 random.shuffle(candidates)
 
                 for next_ent_id in candidates:
@@ -88,9 +115,22 @@ def random_walk_typified(head, dataset_name, kg, items, n_hop, KG2T, R2T, USER_E
                     if with_type:
                         path.append(prefix)
 
-                    path.append(f'{type_prefix}{next_ent_id}')
-                    if dfs(head, cur_ent_t, cand_type, cur_ent_id, next_ent_id, cur_hop + 1, path, rel_id, n_hop,
-                           start_ent_type, end_ent_type, cur_attempts, max_attempts):
+                    path.append(f"{type_prefix}{next_ent_id}")
+                    if dfs(
+                        head,
+                        cur_ent_t,
+                        cand_type,
+                        cur_ent_id,
+                        next_ent_id,
+                        cur_hop + 1,
+                        path,
+                        rel_id,
+                        n_hop,
+                        start_ent_type,
+                        end_ent_type,
+                        cur_attempts,
+                        max_attempts,
+                    ):
                         if with_type:
                             path.pop()
                         path.pop()
@@ -112,13 +152,11 @@ def random_walk_typified(head, dataset_name, kg, items, n_hop, KG2T, R2T, USER_E
         return False
 
     non_prod_entities = set([EXT_ENT])
-    with open(os.path.join(dirpath, f'paths_{head}.txt'), 'w') as fp:
+    with open(os.path.join(dirpath, f"paths_{head}.txt"), "w") as fp:
         cnt = 0
 
         while cnt < max_paths:
-
             if start_ent_type is None:
-
                 cur_start_ent_type = random.choice([PRODUCT, ENTITY])
 
                 if cur_start_ent_type == ENTITY:
@@ -131,13 +169,16 @@ def random_walk_typified(head, dataset_name, kg, items, n_hop, KG2T, R2T, USER_E
                 cur_start_ent_type = start_ent_type
                 id = head
             if n_hop is None:
-                valid_hop_range = []
                 if end_ent_type is None:
                     valid_hop_range = [i for i in range(1, 50 + 1)]
                 else:
-
-                    if (cur_start_ent_type in non_prod_entities and end_ent_type not in non_prod_entities) or \
-                            (cur_start_ent_type not in non_prod_entities and end_ent_type in non_prod_entities):
+                    if (
+                        cur_start_ent_type in non_prod_entities
+                        and end_ent_type not in non_prod_entities
+                    ) or (
+                        cur_start_ent_type not in non_prod_entities
+                        and end_ent_type in non_prod_entities
+                    ):
                         # only odd hops
                         valid_hop_range = [i for i in range(1, 50 + 1, 2)]
                     else:
@@ -160,20 +201,32 @@ def random_walk_typified(head, dataset_name, kg, items, n_hop, KG2T, R2T, USER_E
             if with_type:
                 path.append(prefix)
 
-            path.append(f'{type_prefix}{id}')
+            path.append(f"{type_prefix}{id}")
 
-            prev_ent_t = cur_start_ent_type
-            cur_ent_t = cur_start_ent_type
+            # prev_ent_t = cur_start_ent_type
+            # cur_ent_t = cur_start_ent_type
 
-            dfs(head, cur_start_ent_type, cur_start_ent_type, id, id, cur_hop, path, -100, cur_n_hop, cur_start_ent_type,
-                end_ent_type, [0])
+            dfs(
+                head,
+                cur_start_ent_type,
+                cur_start_ent_type,
+                id,
+                id,
+                cur_hop,
+                path,
+                -100,
+                cur_n_hop,
+                cur_start_ent_type,
+                end_ent_type,
+                [0],
+            )
             cnt += 1
 
 
 class KGSamplerLinkPrediction:
-    TOKEN_INDEX_FILE = 'token_index.txt'
+    TOKEN_INDEX_FILE = "token_index.txt"
 
-    def __init__(self, dataset_name: str, save_dir='statistics', data_dir=None):
+    def __init__(self, dataset_name: str, save_dir="statistics", data_dir=None):
         path = get_data_dir(dataset_name)
         os.makedirs(save_dir, exist_ok=True)
         self.save_dir = os.path.join(save_dir, dataset_name)
@@ -182,31 +235,40 @@ class KGSamplerLinkPrediction:
         self.dataset_info = KARSDataset(dataset_name, data_dir=data_dir)
 
         self.kg2t = KG_RELATION[dataset_name]
-        self.token_index_filepath = os.path.join(path, KGSamplerLinkPrediction.TOKEN_INDEX_FILE + 'LP')
+        self.token_index_filepath = os.path.join(
+            path, KGSamplerLinkPrediction.TOKEN_INDEX_FILE + "LP"
+        )
 
         self.dataset_name = dataset_name
-        print('Loading from ', path, ' the dataset ', dataset_name)
-        item_list_file = os.path.join(path, 'i2kg_map.txt')  # f'item_list.txt')
-        kg_filepath = os.path.join(path, f'kg_train.txt')
-        eid_mapping_filepath = os.path.join(path, f'e_map.txt')
-        pid_mapping_filepath = os.path.join(path, f'i2kg_map.txt')
-        rel_mapping_filepath = os.path.join(path, f'r_map.txt')
-        rel_df = pd.read_csv(rel_mapping_filepath, sep='\t')
-        pid_df = pd.read_csv(pid_mapping_filepath, sep='\t')
-        eid_df = pd.read_csv(eid_mapping_filepath, sep='\t')
-        self.eids = set(eid_df['eid'])
-        self.pid2eid = {pid: eid for pid, eid in zip(pid_df.pid.values.tolist(), pid_df.eid.values.tolist())}
-        self.rel_id2type = {int(i): rel_name for i, rel_name in
-                            zip(rel_df.id.values.tolist(), rel_df.name.values.tolist())}
+        print("Loading from ", path, " the dataset ", dataset_name)
+        item_list_file = os.path.join(path, "i2kg_map.txt")  # f'item_list.txt')
+        kg_filepath = os.path.join(path, "kg_train.txt")
+        eid_mapping_filepath = os.path.join(path, "e_map.txt")
+        pid_mapping_filepath = os.path.join(path, "i2kg_map.txt")
+        rel_mapping_filepath = os.path.join(path, "r_map.txt")
+        rel_df = pd.read_csv(rel_mapping_filepath, sep="\t")
+        pid_df = pd.read_csv(pid_mapping_filepath, sep="\t")
+        eid_df = pd.read_csv(eid_mapping_filepath, sep="\t")
+        self.eids = set(eid_df["eid"])
+        self.pid2eid = {
+            pid: eid
+            for pid, eid in zip(pid_df.pid.values.tolist(), pid_df.eid.values.tolist())
+        }
+        self.rel_id2type = {
+            int(i): rel_name
+            for i, rel_name in zip(
+                rel_df.id.values.tolist(), rel_df.name.values.tolist()
+            )
+        }
         # print(self.rel_id2type)
 
         self.rel_type2id = {v: k for k, v in self.rel_id2type.items()}
         # print(self.rel_type2id)
 
-        self.items =self.load_items(item_list_file)
+        self.items = self.load_items(item_list_file)
 
         # kg in h,r,t format
-        self.kg, self.kg_np =self.load_kg(kg_filepath)
+        self.kg, self.kg_np = self.load_kg(kg_filepath)
         self.graph_level_stats()
         # self.load_augmented_kg()
         self.load_augmented_kg_V2()
@@ -228,7 +290,8 @@ class KGSamplerLinkPrediction:
                 self.aug_kg[ENTITY][h] = dict()
 
         for h in self.eids:
-            if h not in self.kg: continue
+            if h not in self.kg:
+                continue
             for rel, tails in self.kg[h].items():
                 for t in tails:
                     # get tail entity type, uniquely determined by head_ent + rel_type
@@ -256,19 +319,17 @@ class KGSamplerLinkPrediction:
 
                     self.aug_kg[PROD_ENT][h1][R2T[rel]][TAIL_ENT].append(t1)
                     self.aug_kg[TAIL_ENT][t1][R2T[rel]][PROD_ENT].append(h1)
-        print('Created augmented kg')
-        print('Creating token index')
+        print("Created augmented kg")
+        print("Creating token index")
         self.build_token_index()
-        print('Created token index')
+        print("Created token index")
 
     def build_token_index(self):
-
         aug_kg = self.aug_kg
         REL_TYPE2ID = self.rel_type2id
         kg_tokens = set()
 
         def get_token_ent_type(ent_type):
-            token_type = None
             if ent_type == USER:
                 token_type = LiteralPath.user_type
             elif ent_type == PRODUCT:
@@ -278,34 +339,33 @@ class KGSamplerLinkPrediction:
             return token_type
 
         for head_type in aug_kg:
-
             h_token_type = get_token_ent_type(head_type)
 
             for head_id in aug_kg[head_type]:
-                head_token = f'{h_token_type}{head_id}'
+                head_token = f"{h_token_type}{head_id}"
                 kg_tokens.add(head_token)
                 for rel in aug_kg[head_type][head_id]:
                     rel_id = REL_TYPE2ID[rel]
-                    rel_token = f'{LiteralPath.rel_type}{rel_id}'
+                    rel_token = f"{LiteralPath.rel_type}{rel_id}"
                     kg_tokens.add(rel_token)
                     for tail_type in aug_kg[head_type][head_id][rel]:
                         t_token_type = get_token_ent_type(tail_type)
                         for tail_id in aug_kg[head_type][head_id][rel][tail_type]:
-                            tail_token = f'{t_token_type}{tail_id}'
+                            tail_token = f"{t_token_type}{tail_id}"
                             kg_tokens.add(tail_token)
-        with open(self.token_index_filepath, 'w') as f:
+        with open(self.token_index_filepath, "w") as f:
             for token in kg_tokens:
-                f.write(token + '\n')
+                f.write(token + "\n")
 
-    def load_items(self,item_file):
+    def load_items(self, item_file):
         item_ids = set()
         with open(item_file) as f:
             for line_id, line in enumerate(f):
                 if line_id == 0:
                     continue
-                data = line.strip().rstrip().split('\t')
+                data = line.strip().rstrip().split("\t")
                 # print(data)
-                orig_id = int(data[1])
+                # orig_id = int(data[1])
                 item_id = int(data[0])
                 item_ids.add(item_id)
         return item_ids
@@ -318,10 +378,10 @@ class KGSamplerLinkPrediction:
                     degs[h] += 1
         return degs
 
-    def load_kg(self,kg_filepath, undirected=True):
+    def load_kg(self, kg_filepath, undirected=True):
         kg = defaultdict()
         # kg_np = np.loadtxt(kg_filepath, np.uint32)
-        kg_np = pd.read_csv(kg_filepath, sep='\t').to_numpy()
+        kg_np = pd.read_csv(kg_filepath, sep="\t").to_numpy()
         print(kg_np.shape)
         kg_np = np.unique(kg_np, axis=0)
         print(kg_np.shape)
@@ -331,7 +391,7 @@ class KGSamplerLinkPrediction:
                 kg[h] = defaultdict(set)
             if t not in kg:
                 kg[t] = defaultdict(set)
-            assert h != t, 'Self loop detected'
+            assert h != t, "Self loop detected"
             kg[h][r].add(t)
             if undirected:
                 kg[t][r].add(h)
@@ -344,13 +404,19 @@ class KGSamplerLinkPrediction:
         self.n_entities = max(max(self.kg_np[:, 0]), max(self.kg_np[:, 2])) + 1
         self.n_triples = len(self.kg_np)
 
-    def random_walk_sampler(self, ignore_rels=set(), max_hop=None, max_paths=4000, logdir='paths_rand_walk',
-                            itemset_type='inner',
-                            collaborative=True,
-                            nproc=8,
-                            with_type=True,
-                            start_ent_type=ENTITY,
-                            end_ent_type=PRODUCT):
+    def random_walk_sampler(
+        self,
+        ignore_rels=set(),
+        max_hop=None,
+        max_paths=4000,
+        logdir="paths_rand_walk",
+        itemset_type="inner",
+        collaborative=True,
+        nproc=8,
+        with_type=True,
+        start_ent_type=ENTITY,
+        end_ent_type=PRODUCT,
+    ):
         PROD_ENT, U2P_REL = MAIN_PRODUCT_INTERACTION[self.dataset_name]
 
         func = random_walk_typified
@@ -360,18 +426,25 @@ class KGSamplerLinkPrediction:
         # with mp.Pool(nproc) as pool:
         #    pool.starmap( functools.partial(func,
         for eid in tqdm(self.eids):
-            func(eid,
-                 dataset_name=self.dataset_name,
-                 kg=self.aug_kg,
-                 items=self.items, n_hop=max_hop, KG2T=self.kg2t, R2T=self.rel_id2type,
-                 USER_ENT=USER, PROD_ENT=PROD_ENT, EXT_ENT=ENTITY,
-                 U2P_REL=U2P_REL,
-                 logdir=os.path.join(self.save_dir, logdir),
-                 ignore_rels=ignore_rels,
-                 max_paths=max_paths,
-                 itemset_type=itemset_type,
-                 REL_TYPE2ID=self.rel_type2id,
-                 collaborative=collaborative,
-                 with_type=with_type,
-                 start_ent_type=start_ent_type,
-                 end_ent_type=end_ent_type)
+            func(
+                eid,
+                dataset_name=self.dataset_name,
+                kg=self.aug_kg,
+                items=self.items,
+                n_hop=max_hop,
+                KG2T=self.kg2t,
+                R2T=self.rel_id2type,
+                USER_ENT=USER,
+                PROD_ENT=PROD_ENT,
+                EXT_ENT=ENTITY,
+                U2P_REL=U2P_REL,
+                logdir=os.path.join(self.save_dir, logdir),
+                ignore_rels=ignore_rels,
+                max_paths=max_paths,
+                itemset_type=itemset_type,
+                REL_TYPE2ID=self.rel_type2id,
+                collaborative=collaborative,
+                with_type=with_type,
+                start_ent_type=start_ent_type,
+                end_ent_type=end_ent_type,
+            )

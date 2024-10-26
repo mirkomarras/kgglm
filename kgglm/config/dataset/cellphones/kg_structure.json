@@ -1,0 +1,24 @@
+{
+    "user": {
+        "purchase": "product"
+    },
+    "product": {
+        "purchase": "user",
+        "produced_by_prodcompany": "brand",
+        "belong_to_category": "category",
+        "also_bought_related_product": "rproduct",
+        "also_viewed_related_product": "rproduct",
+        "also_bought_product": "product",
+        "also_viewed_product": "product"
+    },
+    "brand": {
+        "produced_by_prodcompany": "product"
+    },
+    "category": {
+        "belong_to_category": "product"
+    },
+    "rproduct": {
+        "also_bought_related_product": "product",
+        "also_viewed_related_product": "product"
+    }
+}

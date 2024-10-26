@@ -1,0 +1,24 @@
+{
+    "user": {
+        "listened": "product"
+    },
+    "artist": {
+        "featured_by_artist": "product"
+    },
+    "engineer": {
+        "mixed_by_engineer": "product"
+    },
+    "product": {
+        "listened": "user",
+        "produced_by_producer": "producer",
+        "featured_by_artist": "artist",
+        "mixed_by_engineer": "engineer",
+        "belong_to_genre": "genre"
+    },
+    "producer": {
+        "produced_by_producer": "product"
+    },
+    "genre": {
+        "belong_to_genre": "product"
+    }
+}

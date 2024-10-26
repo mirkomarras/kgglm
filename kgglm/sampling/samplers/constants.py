@@ -1,23 +1,24 @@
-from kgglm.knowledge_graphs.kg_macros import PRODUCT, USER, ENTITY, RELATION
+from kgglm.knowledge_graphs.kg_macros import ENTITY, PRODUCT, RELATION, USER
+
 
 class LiteralPath:
-    main_user = ''#'Us'
-    oth_user = ''#'U'
-    ent = ''#'E'
-    prod = ''#'P'
+    main_user = ""  #'Us'
+    oth_user = ""  #'U'
+    ent = ""  #'E'
+    prod = ""  #'P'
 
-    user_type = 'U'
-    prod_type = 'P'
-    ent_type = 'E'
-    rel_type = 'R'
+    user_type = "U"
+    prod_type = "P"
+    ent_type = "E"
+    rel_type = "R"
 
-    recom_prod = ''#'P'#'Ps'
-    fw_rel = ''#'R' #'Rf'
-    back_rel = ''#'R' #'Rb'
-    interaction_rel_id = '-1'
+    recom_prod = ""  #'P'#'Ps'
+    fw_rel = ""  #'R' #'Rf'
+    back_rel = ""  #'R' #'Rb'
+    interaction_rel_id = "-1"
 
     def get_ids(self, strings):
-        TERMINATION = ''
+        TERMINATION = ""
         trie = dict()
 
         for string in strings:
@@ -26,14 +27,14 @@ class LiteralPath:
                 if ch not in cur_trie:
                     cur_trie[ch] = dict()
                 cur_trie = cur_trie[ch]
-            cur_trie[TERMINATION] = ''
-
+            cur_trie[TERMINATION] = ""
 
 
 class TypeMapper:
-    mapping = { LiteralPath.user_type : USER,
-            LiteralPath.prod_type : PRODUCT,
-            LiteralPath.ent_type : ENTITY,
-            LiteralPath.rel_type : RELATION,  }
-    inv_mapping = { v:k for k,v in mapping.items() }
-    
+    mapping = {
+        LiteralPath.user_type: USER,
+        LiteralPath.prod_type: PRODUCT,
+        LiteralPath.ent_type: ENTITY,
+        LiteralPath.rel_type: RELATION,
+    }
+    inv_mapping = {v: k for k, v in mapping.items()}

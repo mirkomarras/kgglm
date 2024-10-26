@@ -1,18 +1,6 @@
 import argparse
 
-from kgglm.knowledge_graphs.kg_macros import PRODUCT, USER
-
-
-def none_or_str(value):
-    if value == "None":
-        return None
-    return value
-
-
-def none_or_int(value):
-    if value == "None":
-        return None
-    return int(value)
+from kgglm.data.knowledge_graph.kg_macros import PRODUCT, USER
 
 
 def parse_sampler_args():
@@ -44,9 +32,7 @@ def parse_sampler_args():
         default=100,
         help="Max number of paths sampled for each user.",
     )
-    parser.add_argument(
-        "--max_hop", type=none_or_int, default=3, help="Max number of hops."
-    )
+    parser.add_argument("--max_hop", type=int, default=3, help="Max number of hops.")
     parser.add_argument(
         "--itemset_type",
         type=str,
@@ -65,13 +51,13 @@ def parse_sampler_args():
     )
     parser.add_argument(
         "--start_type",
-        type=none_or_str,
+        type=str,
         default=USER,
         help="Start paths with chosen type",
     )
     parser.add_argument(
         "--end_type",
-        type=none_or_str,
+        type=str,
         default=PRODUCT,
         help="End paths with chosen type",
     )

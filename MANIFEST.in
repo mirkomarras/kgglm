@@ -1,1 +1,1 @@
-recursive-include kgglm/knowledge_graphs/config_files *
+recursive-include kgglm/config *

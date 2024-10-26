@@ -1,0 +1,68 @@
+{
+    "user": {
+        "reviewed": "product"
+    },
+    "product": {
+        "reviewed": "user",
+        "has_ingredient": "ingredient",
+        "has_who_range_who": "who",
+        "has_fsa_range_fsa": "fsa",
+        "has_nutri_range_nutri": "nutri",
+        "has_protein_range_protein": "protein",
+        "has_calories_range_calories": "calories",
+        "has_calories_from_fat_range_caloriesFromFat": "caloriesFromFat",
+        "has_total_fat_range_totalFat": "totalFat",
+        "has_saturated_fat_range_saturatedFat": "saturatedFat",
+        "has_cholesterol_range_cholesterol": "cholesterol",
+        "has_sodium_range_sodium": "sodium",
+        "has_carbohydrate_range_carbohydrate": "carbohydrate",
+        "has_dietary_fiber_range_dietaryFiber": "dietaryFiber",
+        "has_sugars_range_sugars": "sugars",
+        "has_duration_range_duration": "duration"
+    },
+    "ingredient": {
+        "has_ingredient": "product"
+    },
+    "who": {
+        "has_who_range_who": "product"
+    },
+    "fsa": {
+        "has_fsa_range_fsa": "product"
+    },
+    "nutri": {
+        "has_nutri_range_nutri": "product"
+    },
+    "protein_range": {
+        "has_protein_range_protein": "product"
+    },
+    "calories": {
+        "has_calories_range_calories": "product"
+    },
+    "caloriesFromFat": {
+        "has_calories_from_fat_range_caloriesFromFat": "product"
+    },
+    "totalFat": {
+        "has_total_fat_range_totalFat": "product"
+    },
+    "saturatedFat": {
+        "has_saturated_fat_range_saturatedFat": "product"
+    },
+    "cholesterol": {
+        "has_cholesterol_range_cholesterol": "product"
+    },
+    "sodium": {
+        "has_sodium_range_sodium": "product"
+    },
+    "carbohydrate": {
+        "has_carbohydrate_range_carbohydrate": "product"
+    },
+    "dietaryFiber": {
+        "has_dietary_fiber_range_dietaryFiber": "product"
+    },
+    "sugars": {
+        "has_sugars_range_sugars": "product"
+    },
+    "duration": {
+        "has_duration_range_duration": "product"
+    }
+}

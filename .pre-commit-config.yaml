@@ -23,16 +23,6 @@ repos:
       - id: ruff-format
         types_or: [ python, pyi ]
 
-  - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.8.0
-    hooks:
-      - id: black
-        name: black
-        types_or: [ python, pyi ]
-      - id: black-jupyter
-        types_or: [ python, pyi, jupyter ]
-        additional_dependencies: [ ".[jupyter]" ]
-
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0  # Use the ref you want to point at
     hooks:
@@ -42,11 +32,6 @@ repos:
       - id: trailing-whitespace
       - id: check-toml
       - id: check-yaml
-
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
 
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.1
