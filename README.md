@@ -5,7 +5,11 @@
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 [![Torch](https://img.shields.io/badge/Torch-2.0.0-red.svg)](https://shields.io/)
 ![nvidia-rtxa6000](https://img.shields.io/badge/NVIDIA-RTXA6000-76B900.svg?logo=Nvidia&logoColor=white)
-
+<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/mirkomarras/kgglm">
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/mirkomarras/kgglm">
+<a href="https://github.com/mirkomarras/kgglm/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/mirkomarras/kgglm"></a>
+<a href="https://github.com/mirkomarras/kgglm/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/mirkomarras/kgglm"></a>
+<img alt="GitHub" src="https://img.shields.io/github/license/mirkomarras/kgglm">
 # KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation
 [Giacomo Balloccu](https://giacoballoccu.github.io/), [Ludovico Boratto](https://www.ludovicoboratto.com/), [Gianni Fenu](https://web.unica.it/unica/it/ateneo_s07_ss01.page?contentId=SHD30371), [Mirko Marras](https://www.mirkomarras.com/), [Alessandro Soccol](https://github.com/alessandrosocc)
 </div>
