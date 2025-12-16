@@ -31,10 +31,14 @@ sampled from the knowledge graph to capture foundational patterns, and then fine
 (knowledge completion and path reasoning in our case). Experiments on ML1M and LFM1M show that KGGLM beats twenty-two
 baselines in effectiveness under both knowledge completion and
 recommendation.*
-# Paper
+
+**🆕 For convenience, an official implementation of the method is provided and readily available within the hopwise library (link), which we recommend using to facilitate adoption and experimentation.** https://github.com/tail-unica/hopwise
+
+
+### Paper
 ACM DL [**KGGLM: A Generative Language Model for Generalizable Knowledge Graph Representation Learning in Recommendation**](https://doi.org/10.1145/3640457.3691703)
 
-# Setup
+### Setup
 
 > [!TIP]
 > It is possible to download weights and sampled paths here: [[**Link**](https://shorturl.at/EIZ8T)]
